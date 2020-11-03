@@ -34,7 +34,7 @@ let folderGalerija = path.join(__dirname.split("server")[0], "galerija");
 
 let folderKorisnici = path.join(__dirname.split("server")[0], "korisnici");
 
-konekcija.once("open", () => {
+/*konekcija.once("open", () => {
   fs.readdir(folderGalerija, (err, files) => {
     if (err) {
       console.log("Nije moguce izlistati direktorijum.", err);
@@ -62,7 +62,7 @@ konekcija.once("open", () => {
       }
     });
   });
-});
+});*/
 
 //Aplikaciona logika
 app.use(fileUpload({ createParentPath: true }));
