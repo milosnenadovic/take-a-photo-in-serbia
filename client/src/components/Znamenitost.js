@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { setLokacija, formaSet, dodajKomentar, login } from "../actions";
 import DodajKomentar from "./DodajKomentar";
 import LoginForma from "./LoginForma";
+import Footer from "./Footer";
 
 class Znamenitost extends React.Component {
   componentDidMount = async () => {
@@ -41,36 +42,40 @@ class Znamenitost extends React.Component {
 
   renderSadrzaj = () => {
     let sadrzaj = (
-      <div
-        key={`${
-          this.naziv
-            ? this.naziv.split(" ").join("_")
-            : JSON.parse(
-                localStorage.getItem("znamenitostProps")
-              ).naziv.toLowerCase()
-        }`}
-      >
-        <img
-          src={`https://localhost:5000/slike/${
-            this.naziv
-              ? this.naziv.split(" ").join("_").toLowerCase()
-              : JSON.parse(localStorage.getItem("znamenitostProps"))
-                  .naziv.split(" ")
-                  .join("_")
-                  .toLowerCase()
-          }`}
-          alt={`Slika za: ${
-            this.naziv
-              ? this.naziv.split(" ").join("_")
-              : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
-          }`}
-        />
-        <p>
+      <Fragment>
+        <p className="m-5 lead" style={{ color: "#003366" }}>
           {this.opis
             ? this.opis
             : JSON.parse(localStorage.getItem("znamenitostProps")).opis}
         </p>
-      </div>
+        <hr className="bg-primary" />
+        <div className="m-5">
+          <p className="h4 mb-5" style={{ color: "#003366" }}>
+            Galerija:
+          </p>
+          <img
+            src={`https://localhost:5000/slike/${
+              this.naziv
+                ? this.naziv.split(" ").join("_").toLowerCase()
+                : JSON.parse(localStorage.getItem("znamenitostProps"))
+                    .naziv.split(" ")
+                    .join("_")
+                    .toLowerCase()
+            }`}
+            alt={`Slika za: ${
+              this.naziv
+                ? this.naziv.split(" ").join("_")
+                : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
+            }`}
+            className="m-4"
+            style={{
+              width: 800,
+              height: 500,
+              boxShadow: "0px 0px 10px 3px #003366",
+            }}
+          />
+        </div>
+      </Fragment>
     );
     return sadrzaj;
   };
@@ -138,57 +143,84 @@ class Znamenitost extends React.Component {
       }
     }
     return (
-      <div>
-        <h2>
-          {this.naziv
-            ? this.naziv
-            : JSON.parse(localStorage.getItem("znamenitostProps")).naziv}
-        </h2>
-        {this.renderSadrzaj()}
-        <iframe
-          title={`Video za ${
-            this.naziv
+      <div className="text-center">
+        <div className="container text-center mb-5 pt-5">
+          <h2
+            className="text-uppercase display-4 font-weight-bold m-5"
+            style={{ color: "#003366" }}
+          >
+            {this.naziv
               ? this.naziv
-              : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
-          }`}
-          width="560"
-          height="315"
-          src={`https://www.youtube.com/embed/${
-            this.props.lokacija.lokacija
-              ? this.props.lokacija.lokacija.video
-              : "loading video"
-          }`}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-        <p>Lokacija:</p>
-        <iframe
-          title={`Mapa za ${
-            this.naziv
-              ? this.naziv
-              : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
-          }`}
-          width="600"
-          height="450"
-          frameBorder="0"
-          style={{ border: 0 }}
-          src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDA9bz7b8JdFfAebP-Q17IapxE8cLzv9SM&q=${
-            this.q
-              ? this.q
-              : JSON.parse(localStorage.getItem("znamenitostProps"))
-                  .naziv.split(" ")
-                  .join("+")
-          }&zoom=11`}
-          allowFullScreen
-        ></iframe>
-        <p>Komentari posetilaca:</p>
-        {this.props.lokacija.lokacija
-          ? this.renderKomentari(this.props.lokacija.lokacija.komentari)
-          : "Jos uvek nema komenatara za ovu lokaciju..."}
-        {this.props.lokacija.lokacija
-          ? this.renderDodajKomentar(this.props.lokacija.lokacija.naziv)
-          : "loading"}
+              : JSON.parse(localStorage.getItem("znamenitostProps")).naziv}
+          </h2>
+          <hr className="bg-primary" />
+          {this.renderSadrzaj()}
+          <hr className="bg-primary" />
+          <div className="m-5">
+            <p className="h4 mb-5" style={{ color: "#003366" }}>
+              Video:
+            </p>
+            <iframe
+              title={`Video za ${
+                this.naziv
+                  ? this.naziv
+                  : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
+              }`}
+              width="672"
+              height="388"
+              src={`https://www.youtube.com/embed/${
+                this.props.lokacija.lokacija
+                  ? this.props.lokacija.lokacija.video
+                  : "loading video"
+              }`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{
+                boxShadow: "0px 0px 10px 3px #003366",
+              }}
+            ></iframe>
+          </div>
+          <hr className="bg-primary" />
+          <div className="m-5">
+            <p className="mb-5 h4" style={{ color: "#003366" }}>
+              Lokacija:
+            </p>
+            <iframe
+              title={`Mapa za ${
+                this.naziv
+                  ? this.naziv
+                  : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
+              }`}
+              width="800"
+              height="600"
+              frameBorder="0"
+              style={{ border: 0 }}
+              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDA9bz7b8JdFfAebP-Q17IapxE8cLzv9SM&q=${
+                this.q
+                  ? this.q
+                  : JSON.parse(localStorage.getItem("znamenitostProps"))
+                      .naziv.split(" ")
+                      .join("+")
+              }&zoom=11`}
+              allowFullScreen
+            ></iframe>
+          </div>
+          <hr className="bg-primary" />
+          <div className="m-5">
+            <p className="mb-5 h4" style={{ color: "#003366" }}>
+              Komentari posetilaca:
+            </p>
+            {this.props.lokacija.lokacija
+              ? this.renderKomentari(this.props.lokacija.lokacija.komentari)
+              : "Jos uvek nema komenatara za ovu lokaciju..."}
+            {this.props.lokacija.lokacija
+              ? this.renderDodajKomentar(this.props.lokacija.lokacija.naziv)
+              : "loading"}
+          </div>
+          <hr className="bg-primary" />
+        </div>
+        <Footer />
       </div>
     );
   }
