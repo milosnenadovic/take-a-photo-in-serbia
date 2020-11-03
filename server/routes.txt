@@ -1,0 +1,11 @@
+GET '/'
+
+GET '/korisnici/'
+GET '/korisnici/:id'
+POST '/korisnici/'
+DELETE '/korisnici/:id'
+
+GET '/destinacije/'
+GET '/destinacije/:naziv'
+GET '/destinacije/:naziv/lokaliteti'
+GET '/destinacije/:naziv/:nazivLokaliteta'
