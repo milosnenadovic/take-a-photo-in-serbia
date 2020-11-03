@@ -35,7 +35,7 @@ class Destinacija extends React.Component {
       let sadrzaj = [];
       sveZnamenitosti.forEach((e) => {
         sadrzaj.push(
-          <div className="d-flex flex-center m-5" key={e.naziv}>
+          <div className="d-flex flex-center m-3" key={e.naziv}>
             <img
               src={`https://localhost:5000/slike/${e.naziv
                 .split(" ")
@@ -47,9 +47,9 @@ class Destinacija extends React.Component {
                 height: 225,
                 boxShadow: "0px 0px 10px 3px #003366",
               }}
-              className="m-4"
+              className="m-3"
             />
-            <div className="m-5 d-flex flex-column align-items-center justify-content-center">
+            <div className="m-3 d-flex flex-column align-items-center justify-content-center">
               <Link
                 to={{
                   pathname: `/destinacije/znamenitosti/${e.naziv

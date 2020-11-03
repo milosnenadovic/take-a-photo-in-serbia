@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Footer from "./Footer";
@@ -58,22 +58,24 @@ class Destinacije extends React.Component {
         );
       }
       return (
-        <div
-          className="d-flex flex-column align-items-center m-5"
-          key={des.naziv}
-        >
-          <hr className="m-3 bg-primary w-100" />
-          <Link
-            to={`/destinacije/${
-              window.location.pathname.split("/")[2]
-            }/${des.naziv.replace(" ", "_").toLowerCase()}`}
-            className="p-3 h2"
+        <Fragment>
+          <div
+            className="d-flex flex-column align-items-center m-4"
+            key={des.naziv}
           >
-            {des.naziv.toUpperCase()}
-          </Link>
-          <div className="d-flex">{html}</div>
-          <p className="p-5">{des.opis}</p>
-        </div>
+            <Link
+              to={`/destinacije/${
+                window.location.pathname.split("/")[2]
+              }/${des.naziv.replace(" ", "_").toLowerCase()}`}
+              className="m-4 h2"
+            >
+              {des.naziv.toUpperCase()}
+            </Link>
+            <div className="d-flex">{html}</div>
+            <p className="p-4">{des.opis}</p>
+          </div>
+          <hr className="bg-primary w-100" />
+        </Fragment>
       );
     });
     return content;
@@ -82,10 +84,14 @@ class Destinacije extends React.Component {
   render() {
     return (
       <div>
-        <div className="container text-center mb-5 mt-5 pt-5">
-          <h2 className="display-4 font-weight-bold" style={{ color: "#003366" }}>
+        <div className="container text-center mb-5 pt-5">
+          <h2
+            className="display-4 m-5 font-weight-bold"
+            style={{ color: "#003366" }}
+          >
             {window.location.pathname.split("/")[2].toUpperCase()}
           </h2>
+          <hr className="bg-primary" />
           <div>
             {this.response
               ? this.renderDestinacije(this.response.data.sadržaj)
