@@ -10,12 +10,6 @@ class Destinacija extends React.Component {
     this.props.getDestinacija(
       window.location.pathname.split("destinacije/")[1]
     );
-    if (
-      localStorage.getItem("znamenitostProps") !== undefined &&
-      localStorage.getItem("znamenitostProps") !== null
-    ) {
-      localStorage.removeItem("znamenitostProps");
-    }
     if (!this.responseZnamenitosti) {
       this.responseZnamenitosti = await axios.get(
         `https://localhost:5000/znamenitosti/${this.naziv}`

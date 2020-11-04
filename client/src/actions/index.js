@@ -87,6 +87,7 @@ export const setLokacija = (lokacija) => async (dispatch) => {
     type: LOKACIJA,
     payload: response.data,
   });
+  localStorage.setItem("znamenitostProps", JSON.stringify(response.data));
 };
 
 export const dodajKomentar = (znamenitost, komentar) => async (dispatch) => {

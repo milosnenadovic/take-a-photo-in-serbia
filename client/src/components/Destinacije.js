@@ -58,11 +58,8 @@ class Destinacije extends React.Component {
         );
       }
       return (
-        <Fragment>
-          <div
-            className="d-flex flex-column align-items-center m-4"
-            key={des.naziv}
-          >
+        <Fragment key={des.naziv}>
+          <div className="d-flex flex-column align-items-center m-4">
             <Link
               to={`/destinacije/${
                 window.location.pathname.split("/")[2]

@@ -104,7 +104,7 @@ app.get("/slike/:slika", async (req, res) => {
   await Slika.findOne(
     { naziv: filename.replace(" ", "_").toLowerCase() },
     (err, results) => {
-      if (results !== null) {
+      if (results !== null && results !== undefined) {
         res.setHeader("content-type", results.contentType);
         let buff = Buffer.from(results.img.buffer, "base64");
         res.send(buff);

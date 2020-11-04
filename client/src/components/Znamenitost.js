@@ -10,19 +10,59 @@ class Znamenitost extends React.Component {
     this.proveraStorage();
     if (this.naziv) {
       this.props.setLokacija(this.naziv.split(" ").join("_").toLowerCase());
-    } else {
-      this.props.setLokacija(
-        JSON.parse(localStorage.getItem("znamenitostProps"))
-          .naziv.split(" ")
+    } else if (
+      JSON.parse(localStorage.getItem("znamenitostProps")) !== undefined &&
+      JSON.parse(localStorage.getItem("znamenitostProps")) !== null
+    ) {
+      if (
+        decodeURI(
+          window.location.pathname.split("/")[
+            window.location.pathname.split("/").length - 1
+          ]
+        ) ===
+        JSON.parse(localStorage.getItem("znamenitostProps"))[0]
+          .naziv.toLowerCase()
+          .split(" ")
           .join("_")
-          .toLowerCase()
-      );
+      ) {
+        if (this.props.lokacija.lokacija === undefined)
+          this.props.setLokacija(
+            JSON.parse(localStorage.getItem("znamenitostProps"))[0]
+              .naziv.split(" ")
+              .join("_")
+              .toLowerCase()
+          );
+      } else {
+        console.log(
+          "ne poklapaju se href i znamenitostProps: " +
+            decodeURI(
+              window.location.pathname.split("/")[
+                window.location.pathname.split("/").length - 1
+              ]
+            )
+        );
+        this.props.setLokacija(
+          decodeURI(
+            window.location.pathname.split("/")[
+              window.location.pathname.split("/").length - 1
+            ]
+          )
+        );
+      }
+    } else {
+      console.log("otislo u drugi else");
     }
     this.forceUpdate();
   };
 
   proveraStorage = () => {
-    if (localStorage.getItem("znamenitostProps") === null) {
+    console.log("provera storage");
+    //slucaj kada ne postoji nikakav local storage
+    if (
+      localStorage.getItem("znamenitostProps") === null ||
+      localStorage.getItem("znamenitostProps") === "undefined"
+    ) {
+      console.log("znamenitostProps ne postoji");
       localStorage.setItem(
         "znamenitostProps",
         JSON.stringify(this.props.location.props)
@@ -31,11 +71,16 @@ class Znamenitost extends React.Component {
       JSON.parse(localStorage.getItem("znamenitostProps")) !==
       this.props.location.props
     ) {
+      console.log(
+        "znamenitostProps postoji ali nije jednaka props iz Link komponente"
+      );
       if (this.props.location.props !== undefined) {
         localStorage.setItem(
           "znamenitostProps",
           JSON.stringify(this.props.location.props)
         );
+      } else {
+        console.log("props iz Linka je undefined");
       }
     }
   };
@@ -46,7 +91,20 @@ class Znamenitost extends React.Component {
         <p className="m-5 lead" style={{ color: "#003366" }}>
           {this.opis
             ? this.opis
-            : JSON.parse(localStorage.getItem("znamenitostProps")).opis}
+            : JSON.parse(
+                localStorage.getItem("znamenitostProps")
+              )[0].naziv.toLowerCase() ===
+              decodeURI(
+                window.location.pathname.split("/")[
+                  window.location.pathname.split("/").length - 1
+                ]
+              )
+                .split("_")
+                .join(" ")
+            ? JSON.parse(localStorage.getItem("znamenitostProps"))[0].opis
+            : this.props.lokacija.lokacija
+            ? this.props.lokacija.lokacija[0].opis
+            : "Znamenitost"}
         </p>
         <hr className="bg-primary" />
         <div className="m-5">
@@ -57,15 +115,44 @@ class Znamenitost extends React.Component {
             src={`https://localhost:5000/slike/${
               this.naziv
                 ? this.naziv.split(" ").join("_").toLowerCase()
-                : JSON.parse(localStorage.getItem("znamenitostProps"))
+                : JSON.parse(
+                    localStorage.getItem("znamenitostProps")
+                  )[0].naziv.toLowerCase() ===
+                  decodeURI(
+                    window.location.pathname.split("/")[
+                      window.location.pathname.split("/").length - 1
+                    ]
+                  )
+                    .split("_")
+                    .join(" ")
+                ? JSON.parse(localStorage.getItem("znamenitostProps"))[0]
                     .naziv.split(" ")
                     .join("_")
                     .toLowerCase()
+                : this.props.lokacija.lokacija
+                ? this.props.lokacija.lokacija[0].naziv
+                    .split(" ")
+                    .join("_")
+                    .toLowerCase()
+                : ""
             }`}
             alt={`Slika za: ${
               this.naziv
                 ? this.naziv.split(" ").join("_")
-                : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
+                : JSON.parse(
+                    localStorage.getItem("znamenitostProps")
+                  )[0].naziv.toLowerCase() ===
+                  decodeURI(
+                    window.location.pathname.split("/")[
+                      window.location.pathname.split("/").length - 1
+                    ]
+                  )
+                    .split("_")
+                    .join(" ")
+                ? JSON.parse(localStorage.getItem("znamenitostProps"))[0].naziv
+                : this.props.lokacija.lokacija
+                ? this.props.lokacija.lokacija[0].naziv
+                : "Znamenitost"
             }`}
             className="m-4"
             style={{
@@ -80,17 +167,46 @@ class Znamenitost extends React.Component {
     return sadrzaj;
   };
 
-  renderKomentari = (komentari) => {
-    if (komentari === undefined) {
-      return <div>Jos uvek nema komentara</div>;
+  renderKomentari = (znamenitost) => {
+    console.log(znamenitost);
+    if (znamenitost === undefined) {
+      console.log("znamenitost = undefined");
+      return (
+        <p className="lead" style={{ color: "#003366" }}>
+          Još uvek nema komenatara za ovu lokaciju...
+        </p>
+      );
+    } else if (znamenitost.komentari.length < 1) {
+      console.log("znamenitost.komentari = undefined");
+      return (
+        <p className="lead" style={{ color: "#003366" }}>
+          Još uvek nema komentara za ovu lokaciju...
+        </p>
+      );
     } else {
-      return komentari.map((kom) => (
-        <div key={kom._id}>
-          <p>
-            <span>Autor: {kom.autor}</span>{" "}
-            <span>{kom.date.split("T")[0]}</span>
+      console.log("znamenitost ima komentare");
+      return znamenitost.komentari.map((kom) => (
+        <div className="d-inline-block shadow bg-light w-50 m-2" key={kom._id}>
+          <div className="d-flex justify-content-around">
+            <img
+              id="korisnik-komentar"
+              src={`https://localhost:5000/slike/korisnik_${kom.autor}`}
+              alt="NoPic"
+              className="rounded mt-2 mb-1 mr-3 ml-1"
+              style={{
+                width: 50,
+                height: 50,
+                boxShadow: "0px 0px 10px 1px #003366",
+              }}
+            />
+            <p className="mt-2 mb-1 mr-3 ml-3 text-primary">{kom.autor}</p>
+            <p className="font-weight-light mt-2 mb-1 mr-1 ml-3">
+              {kom.date.split("T")[0]}
+            </p>
+          </div>
+          <p className="m-2 lead" style={{ color: "#003366" }}>
+            {kom.sadržaj}
           </p>
-          <p>{kom.sadržaj}</p>
         </div>
       ));
     }
@@ -133,7 +249,9 @@ class Znamenitost extends React.Component {
   };
 
   render() {
+    //setovanje vrednosti preko props atributa Link komponente
     if (this.props.location.props !== undefined) {
+      console.log("props location nije undefined");
       this.naziv = this.props.location.props.naziv;
       this.opis = this.props.location.props.opis;
       if (this.naziv.split(" ").length > 1) {
@@ -141,6 +259,7 @@ class Znamenitost extends React.Component {
       } else {
         this.q = this.naziv;
       }
+      console.log(this.q);
     }
     return (
       <div className="text-center">
@@ -151,7 +270,20 @@ class Znamenitost extends React.Component {
           >
             {this.naziv
               ? this.naziv
-              : JSON.parse(localStorage.getItem("znamenitostProps")).naziv}
+              : JSON.parse(
+                  localStorage.getItem("znamenitostProps")
+                )[0].naziv.toLowerCase() ===
+                decodeURI(
+                  window.location.pathname.split("/")[
+                    window.location.pathname.split("/").length - 1
+                  ]
+                )
+                  .split("_")
+                  .join(" ")
+              ? JSON.parse(localStorage.getItem("znamenitostProps"))[0].naziv
+              : this.props.lokacija.lokacija
+              ? this.props.lokacija.lokacija[0].naziv
+              : "Znamenitost"}
           </h2>
           <hr className="bg-primary" />
           {this.renderSadrzaj()}
@@ -164,14 +296,42 @@ class Znamenitost extends React.Component {
               title={`Video za ${
                 this.naziv
                   ? this.naziv
-                  : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
+                  : JSON.parse(
+                      localStorage.getItem("znamenitostProps")
+                    )[0].naziv.toLowerCase() ===
+                    decodeURI(
+                      window.location.pathname.split("/")[
+                        window.location.pathname.split("/").length - 1
+                      ]
+                    )
+                      .split("_")
+                      .join(" ")
+                  ? JSON.parse(localStorage.getItem("znamenitostProps"))[0]
+                      .naziv
+                  : this.props.lokacija.lokacija
+                  ? this.props.lokacija.lokacija[0].naziv
+                  : "Znamenitost"
               }`}
               width="672"
               height="388"
               src={`https://www.youtube.com/embed/${
-                this.props.lokacija.lokacija
-                  ? this.props.lokacija.lokacija.video
-                  : "loading video"
+                this.props.location.props
+                  ? this.props.location.props.video
+                  : JSON.parse(
+                      localStorage.getItem("znamenitostProps")
+                    )[0].naziv.toLowerCase() ===
+                    decodeURI(
+                      window.location.pathname.split("/")[
+                        window.location.pathname.split("/").length - 1
+                      ]
+                    )
+                      .split("_")
+                      .join(" ")
+                  ? JSON.parse(localStorage.getItem("znamenitostProps"))[0]
+                      .video
+                  : this.props.lokacija.lokacija
+                  ? this.props.lokacija.lokacija[0].video
+                  : "Znamenitost"
               }`}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -190,7 +350,21 @@ class Znamenitost extends React.Component {
               title={`Mapa za ${
                 this.naziv
                   ? this.naziv
-                  : JSON.parse(localStorage.getItem("znamenitostProps")).naziv
+                  : JSON.parse(
+                      localStorage.getItem("znamenitostProps")
+                    )[0].naziv.toLowerCase() ===
+                    decodeURI(
+                      window.location.pathname.split("/")[
+                        window.location.pathname.split("/").length - 1
+                      ]
+                    )
+                      .split("_")
+                      .join(" ")
+                  ? JSON.parse(localStorage.getItem("znamenitostProps"))[0]
+                      .naziv
+                  : this.props.lokacija.lokacija
+                  ? this.props.lokacija.lokacija[0].naziv
+                  : "Znamenitost"
               }`}
               width="800"
               height="600"
@@ -199,7 +373,7 @@ class Znamenitost extends React.Component {
               src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDA9bz7b8JdFfAebP-Q17IapxE8cLzv9SM&q=${
                 this.q
                   ? this.q
-                  : JSON.parse(localStorage.getItem("znamenitostProps"))
+                  : JSON.parse(localStorage.getItem("znamenitostProps"))[0]
                       .naziv.split(" ")
                       .join("+")
               }&zoom=11`}
@@ -207,13 +381,17 @@ class Znamenitost extends React.Component {
             ></iframe>
           </div>
           <hr className="bg-primary" />
-          <div className="m-5">
+          <div className="m-5 text-center">
             <p className="mb-5 h4" style={{ color: "#003366" }}>
               Komentari posetilaca:
             </p>
-            {this.props.lokacija.lokacija
-              ? this.renderKomentari(this.props.lokacija.lokacija.komentari)
-              : "Jos uvek nema komenatara za ovu lokaciju..."}
+            {this.props.lokacija.lokacija ? (
+              this.renderKomentari(this.props.lokacija.lokacija[0])
+            ) : (
+              <p className="lead" style={{ color: "#003366" }}>
+                Još uvek nema komenatara za ovu lokaciju...
+              </p>
+            )}
             {this.props.lokacija.lokacija
               ? this.renderDodajKomentar(this.props.lokacija.lokacija.naziv)
               : "loading"}
