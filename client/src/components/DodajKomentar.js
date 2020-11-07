@@ -17,18 +17,32 @@ const DodajKomentar = (props) => {
   const { register, handleSubmit, errors } = useForm();
 
   return (
-    <form className="container m-3 bg-primary" onSubmit={handleSubmit(onKomentarSubmit)}>
-      <label htmlFor="komentar">
-        Komentar korisnika {props.korisnik.email}
-      </label>
-      <input
-        name="komentar"
-        type="text"
-        placeholder="Unesite komentar..."
-        ref={register({ required: "Morate uneti komentar!" })}
-      />
+    <form
+      className="d-inline-block m-3 text-center align-middle bg-light shadow w-50"
+      onSubmit={handleSubmit(onKomentarSubmit)}
+    >
+      <div className="d-flex justify-content-center align-items-center">
+        <label
+          className="lead m-2"
+          style={{ color: "#003366" }}
+          htmlFor="komentar"
+        >
+          Komentar:
+        </label>
+        <textarea
+          name="komentar"
+          type="text"
+          placeholder="Unesite komentar..."
+          ref={register({ required: "Morate uneti komentar!" })}
+          style={{ color: "#003366" }}
+          className="mt-1"
+          rows="5"
+          cols="40"
+        />
+      </div>
+      <br />
       {errors.komentar && <span>{errors.komentar.message}</span>}
-      <input type="submit" name="submit" />
+      <input className="btn btn-primary mb-2" type="submit" name="submit" />
     </form>
   );
 };

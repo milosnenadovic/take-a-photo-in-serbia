@@ -2,8 +2,8 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { setLokacija, formaSet, dodajKomentar, login } from "../actions";
 import DodajKomentar from "./DodajKomentar";
-import LoginForma from "./LoginForma";
 import Footer from "./Footer";
+import { Link } from "react-router-dom";
 
 class Znamenitost extends React.Component {
   componentDidMount = async () => {
@@ -186,7 +186,7 @@ class Znamenitost extends React.Component {
     } else {
       console.log("znamenitost ima komentare");
       return znamenitost.komentari.map((kom) => (
-        <div className="d-inline-block shadow bg-light w-50 m-2" key={kom._id}>
+        <div className="d-inline-block shadow bg-light w-50 m-1" key={kom._id}>
           <div className="d-flex justify-content-around">
             <img
               id="korisnik-komentar"
@@ -226,24 +226,36 @@ class Znamenitost extends React.Component {
     );
   };
 
-  onSubmitLogin = async (forma, email, password) => {
+  /*onSubmitLogin = async (forma, email, password) => {
     if (forma === "login") {
       await this.props.login(email, password);
     }
-  };
+  };*/
 
   renderForma = () => {
-    return this.props.korisnik.forma !== "login" ? (
-      <div>
-        Morate biti ulogovani kako biste mogli da ostavite Vas komentar!
-        <button onClick={() => this.props.formaSet("login")}>LOGIN</button>
-      </div>
-    ) : (
-      <div>
-        <LoginForma
-          user={this.props.korisnik.korisnik}
-          onSubmit={this.onSubmitLogin}
-        />
+    console.log(this.props.korisnik);
+    return (
+      <div className="m-5">
+        <p>Morate biti ulogovani kako biste mogli da ostavite Vaš komentar!</p>
+        <Link
+          to={{
+            pathname: "/login",
+            props: { korisnik: this.props.korisnik.korisnik },
+          }}
+          className="btn btn-primary text-light"
+        >
+          Login
+        </Link>
+        <span className="m-2">ili</span>
+        <Link
+          to={{
+            pathname: "/signup",
+            props: { korisnik: this.props.korisnik.korisnik },
+          }}
+          className="btn btn-primary text-light"
+        >
+          Signup
+        </Link>
       </div>
     );
   };
