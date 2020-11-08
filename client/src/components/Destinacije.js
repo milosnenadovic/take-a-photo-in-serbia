@@ -84,7 +84,7 @@ class Destinacije extends React.Component {
         <div className="container text-center mb-5 pt-5">
           <h2
             className="display-4 m-5 font-weight-bold"
-            style={{ color: "#003366" }}
+            style={{ color: "#003366", fontFamily: "Commissioner" }}
           >
             {window.location.pathname.split("/")[2].toUpperCase()}
           </h2>

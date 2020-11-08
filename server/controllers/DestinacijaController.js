@@ -17,7 +17,8 @@ exports.sveDestinacije = async (req, res) => {
   }
 };
 
-exports.pregledanaDestinacija = async (req, res) => {
+exports.jednaDestinacija = async (req, res) => {
+  //uvecanje pregleda destinacije
   const naziv = req.params.destinacija.split("_").join(" ");
   const filter = new RegExp(`^${naziv}$`, "i");
   const dokument = await Destinacija.findOne({
@@ -36,12 +37,7 @@ exports.pregledanaDestinacija = async (req, res) => {
       new: true,
     }
   );
-  res
-    .status(200)
-    .json({ destinacija: destinacija[0], msg: "Uspesno dodati pregledi" });
-};
-
-exports.jednaDestinacija = async (req, res) => {
+    //slanje destinacije - drugi nacin za izvlacenje iz baze (bez koriscenja regularnih izraza)
   const destinacije = await Destinacija.findOne({
     tip:
       req.params.destinacije.charAt(0).toUpperCase() +

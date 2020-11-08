@@ -15,6 +15,22 @@ class Destinacija extends React.Component {
         `https://localhost:5000/znamenitosti/${this.naziv}`
       );
     }
+    let navs = [
+      "/destinacije/reke",
+      "/destinacije/jezera",
+      "/destinacije/planine",
+      "/destinacije/gradovi",
+    ];
+    let url = window.location.pathname.split("/");
+    url.pop();
+    let ind = navs.indexOf(url.join("/"));
+    if (ind > -1) navs.splice(ind, 1);
+    let nav = document.getElementById(url.join("/"));
+    navs.map((nav) =>
+      document.getElementById(nav).classList.remove("font-weight-bold")
+    );
+    nav.classList.add("font-weight-bold");
+
     this.forceUpdate();
   };
 
@@ -107,7 +123,7 @@ class Destinacija extends React.Component {
         <div className="container text-center mb-5 pt-5">
           <h2
             className="text-uppercase display-4 font-weight-bold m-5"
-            style={{ color: "#003366" }}
+            style={{ color: "#003366", fontFamily: "Commissioner" }}
           >
             {this.props.lokacija.lokacija
               ? this.props.lokacija.lokacija.naziv

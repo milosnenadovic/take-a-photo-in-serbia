@@ -374,9 +374,9 @@ const Header = (props) => {
       <h1
         className="display-2 text-center mb-0 text-weight-bold p-5 align-top"
         style={{
-          color: "#CCCCDD",
+          color: "#ff3333",
           backgroundColor: "#003366",
-          textShadow: "3px 3px 6px #000000",
+          textShadow: "3px 3px 6px #fff",
         }}
       >
         UPOZNAJ SRBIJU
