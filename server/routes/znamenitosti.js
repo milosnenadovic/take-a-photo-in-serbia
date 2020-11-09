@@ -12,8 +12,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:destinacija", async (req, res) => {
-  let destinacija = req.params.destinacija.split("_").join(" ");
+router.get("/:znamenitost", async (req, res) => {
+  let destinacija = req.params.znamenitost.split("_").join(" ");
   const sveZnamenitosti = await Znamenitosti.find();
   if (!sveZnamenitosti) {
     res.status(404).json({

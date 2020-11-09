@@ -70,9 +70,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-//Rute
-//app.use("/tokeni", require("./routes/tokeni"));
-
 //Ruta za korisnike
 app.use("/korisnici", require("./routes/korisnici"));
 //Ruta za destinacije
@@ -134,9 +131,6 @@ const sslServer = https.createServer(
   },
   app
 );
-
-//Kreiranje servera
-//const server = http.createServer(app);
 
 const PORT = process.env.PORT || 5000;
 

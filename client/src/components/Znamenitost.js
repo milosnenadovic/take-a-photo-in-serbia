@@ -233,7 +233,6 @@ class Znamenitost extends React.Component {
   };*/
 
   renderForma = () => {
-    console.log(this.props.korisnik);
     return (
       <div className="m-5">
         <p>Morate biti ulogovani kako biste mogli da ostavite Vaš komentar!</p>
@@ -271,7 +270,6 @@ class Znamenitost extends React.Component {
       } else {
         this.q = this.naziv;
       }
-      console.log(this.q);
     }
     return (
       <div className="text-center">
@@ -388,7 +386,7 @@ class Znamenitost extends React.Component {
                   : JSON.parse(localStorage.getItem("znamenitostProps"))[0]
                       .naziv.split(" ")
                       .join("+")
-              }&zoom=11`}
+              }&zoom=13`}
               allowFullScreen
             ></iframe>
           </div>
