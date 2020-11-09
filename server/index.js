@@ -34,7 +34,7 @@ let folderGalerija = path.join(__dirname.split("server")[0], "galerija");
 
 let folderKorisnici = path.join(__dirname.split("server")[0], "korisnici");
 
-/*konekcija.once("open", () => {
+konekcija.once("open", () => {
   fs.readdir(folderGalerija, (err, files) => {
     if (err) {
       console.log("Nije moguce izlistati direktorijum.", err);
@@ -43,7 +43,7 @@ let folderKorisnici = path.join(__dirname.split("server")[0], "korisnici");
     files.forEach(async (file) => {
       let mimeType = file.contentType;
       if (!mimeType) {
-        mimeType = mime.lookup(file);
+        mimeType = mime.getType(file);
       }
       if ((await Slika.findOne({ naziv: file.split(".")[0] })) === null) {
         var newImg = fs.readFileSync(folderGalerija.concat("\\", file));
@@ -62,7 +62,7 @@ let folderKorisnici = path.join(__dirname.split("server")[0], "korisnici");
       }
     });
   });
-});*/
+});
 
 //Aplikaciona logika
 app.use(fileUpload({ createParentPath: true }));
