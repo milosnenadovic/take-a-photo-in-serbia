@@ -32,7 +32,7 @@ const Top = (props) => {
         >
           {props.content[props.ind]
             ? props.content[props.ind].naziv
-            : "Učitavanje..."}
+            : ""}
         </Link>
       </div>
       {props.content[props.ind] ? (

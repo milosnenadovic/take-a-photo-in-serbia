@@ -10,7 +10,7 @@ const DodajKomentar = (props) => {
       })
       .then(() => {
         alert("Komentar uspesno postavljen!");
-        document.getElementsByTagName("input").komentar.value = "";
+        document.getElementsByTagName("textarea").komentar.value = "";
       });
   };
 

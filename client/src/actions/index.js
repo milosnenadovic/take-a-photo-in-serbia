@@ -16,6 +16,23 @@ const apiJSON = axios.create({
   baseURL: "https://localhost:5000",
 });
 
+const proveraStorage = (lokacija, data) => {
+  if (localStorage.getItem("znamenitostProps")) {
+    console.log(localStorage.getItem("znamenitostProps"));
+    if (JSON.parse(
+      localStorage
+        .getItem("znamenitostProps"))
+        .naziv.toLowerCase()
+        .split(" ")
+        .join("_") !== lokacija
+    ) {
+      localStorage.setItem("znamenitostProps", JSON.stringify(data));
+    }
+  } else {
+    localStorage.setItem("znamenitostProps", JSON.stringify(data));
+  }
+};
+
 export const signup = (email, password) => async (dispatch) => {
   const response = await apiJSON.post("/korisnici", {
     email,
@@ -82,12 +99,13 @@ export const destinacijeGet = (destinacije) => async (dispatch) => {
 };
 
 export const setLokacija = (lokacija) => async (dispatch) => {
+  console.log("set lokacija: " + lokacija);
   let response = await apiJSON.get(`/znamenitosti/${lokacija}`);
   dispatch({
     type: LOKACIJA,
-    payload: response.data,
+    payload: response.data[0],
   });
-  localStorage.setItem("znamenitostProps", JSON.stringify(response.data));
+  proveraStorage(lokacija, response.data[0]);
 };
 
 export const dodajKomentar = (znamenitost, komentar) => async (dispatch) => {
@@ -106,7 +124,6 @@ export const updateKorisnik = (podaci) => {
 };
 
 export const getDestinacija = (destinacija) => async (dispatch) => {
-  console.log("get destinacija: " + destinacija);
   const response = await apiJSON.get(`/destinacije/${destinacija}`);
   dispatch({ type: GET_DESTINACIJA, payload: response.data[0] });
 };
