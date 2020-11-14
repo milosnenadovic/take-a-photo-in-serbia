@@ -255,10 +255,15 @@ const Header = (props) => {
                   pathname: "/kontakt",
                   props: { korisnik: props.auth.korisnik },
                 }}
-                style={{ height: 60, width: 150 }}
-                className="btn lead bg-primary d-flex align-items-center justify-content-center text-light shadow"
+                style={{
+                  height: 60,
+                  width: 150,
+                  fontSize: 16,
+                  backgroundColor: "#115599",
+                }}
+                className="btn lead d-flex align-items-center justify-content-center text-light shadow"
               >
-                Kontaktiraj nas porukom
+                Pošalji nam poruku
               </Link>
               <div
                 className="bg-none d-flex align-items-center justify-content-end ml-1 mr-2"
@@ -266,9 +271,13 @@ const Header = (props) => {
               >
                 <span
                   className="pr-2 text-right lead"
-                  style={{ color: "#115599" }}
+                  style={{ color: "#115599", fontSize: 16 }}
                 >
-                  {`${props.auth.korisnik.ime} ${props.auth.korisnik.prezime}`}
+                  {!props.auth.korisnik.ime && !props.auth.korisnik.prezime ? props.auth.korisnik.email.split("@")[0] : ""}
+                  {props.auth.korisnik.ime ? props.auth.korisnik.ime : ""}
+                  {props.auth.korisnik.prezime
+                    ? ` ${props.auth.korisnik.prezime}`
+                    : ""}
                 </span>
                 <img
                   id="korisnik-header"
@@ -297,9 +306,9 @@ const Header = (props) => {
                 <div className="dropdown-menu">
                   <Link
                     to="/podesavanja"
-                    className="dropdown-item bg-secondary font-weight-bold text-light"
+                    className="dropdown-item bg-primary text-light"
                   >
-                    Podesavanja
+                    Podešavanja
                   </Link>
                   <Link
                     to={{
@@ -307,9 +316,9 @@ const Header = (props) => {
                       onClick: () =>
                         props.logout(props.auth.korisnik.refreshToken),
                     }}
-                    className="dropdown-item bg-danger text-light font-weight-bold"
+                    className="dropdown-item bg-danger text-light"
                   >
-                    Logout
+                    Odjava
                   </Link>
                 </div>
               </div>
@@ -337,7 +346,7 @@ const Header = (props) => {
             className="btn bg-primary text-light d-flex align-items-center justify-content-center"
             style={{ height: 60, width: 150, fontSize: 18 }}
           >
-            Login
+            Uloguj se
           </Link>
           <Link
             to={{
@@ -347,7 +356,7 @@ const Header = (props) => {
             className="btn bg-primary align-middle text-light d-flex align-items-center justify-content-center"
             style={{ height: 60, width: 150, fontSize: 18 }}
           >
-            Signup
+            Registracija
           </Link>
           <Link
             to={{
@@ -360,7 +369,7 @@ const Header = (props) => {
               fontSize: 16,
               backgroundColor: "#115599",
             }}
-            className="btn lead text-light d-flex align-items-center justify-content-center"
+            className="btn lead d-flex align-items-center justify-content-center text-light shadow"
           >
             Pošalji nam poruku
           </Link>
@@ -396,6 +405,4 @@ const mapStateToProps = (state) => {
   return { auth: state.auth, lista: state.top.lista };
 };
 
-export default connect(mapStateToProps, { logout, getDestinacija })(
-  Header
-);
+export default connect(mapStateToProps, { logout, getDestinacija })(Header);

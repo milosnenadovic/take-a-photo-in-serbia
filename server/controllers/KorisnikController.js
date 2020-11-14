@@ -35,7 +35,7 @@ exports.dodajKorisnika = (req, res) => {
       return next(err);
     }
     if (existingUser) {
-      return res.status(422).send({ error: "Email se vec koristi!" });
+      return res.status(422).send({ error: "E-mail se već koristi!" });
     }
     const noviKorisnik = new Korisnik({
       email: emailKorisnika,
@@ -46,7 +46,7 @@ exports.dodajKorisnika = (req, res) => {
       .save()
       .then(() =>
         res.json({
-          msg: "Korisnik registrovan!",
+          msg: "Uspešno ste registrovani! Sada se možete ulogovati.",
           korisnik: noviKorisnik,
         })
       )
@@ -62,7 +62,7 @@ exports.loginKorisnika = (req, res) => {
       return next(err);
     }
     if (!existingUser) {
-      return res.status(422).send({ error: "Email ne postoji!" });
+      return res.status(422).send({ error: "E-mail ne postoji!" });
     } else {
       bcrypt.compare(
         passwordKorisnika,
@@ -84,7 +84,7 @@ exports.loginKorisnika = (req, res) => {
               .then(() => {
                 res.header("authorization", token);
                 return res.status(200).json({
-                  msg: "Korisnik ulogovan!",
+                  msg: "Ulogovani ste!",
                   korisnik: existingUser,
                   token,
                   refreshToken,
@@ -93,7 +93,7 @@ exports.loginKorisnika = (req, res) => {
               .catch((err) => res.status(400).json("Error: " + err));
           } else {
             res.status(200).json({
-              msg: "Neispravan password!",
+              msg: "Neispravna lozinka!",
             });
           }
         }
@@ -135,7 +135,7 @@ exports.updateKorisnika = async (req, res) => {
       });
       res
         .status(200)
-        .json({ korisnik: noviKorisnik, msg: "Uspesno se izmenili podatke!" });
+        .json({ korisnik: noviKorisnik, msg: "Uspešno se izmenili podatke!" });
     } else {
       res.status(403).json({ msg: "Nemate potrebne podatke za update!" });
     }
@@ -158,10 +158,10 @@ exports.updateKorisnika = async (req, res) => {
       console.log("Files: ");
       console.log(files);
       if (err) {
-        console.log("Nije moguce izlistati direktorijum.", err);
+        console.log("Nije moguće izlistati direktorijum.", err);
         res.status(200).json({
           korisnik: noviKorisnik,
-          msg: "Serverska greska! Pokusajte ponovo!",
+          msg: "Serverska greška! Pokusajte ponovo!",
         });
         process.exit(1);
       }
@@ -190,12 +190,11 @@ exports.updateKorisnika = async (req, res) => {
                 console.log("Slika " + file + " je uneta u bazu!");
                 res.status(200).json({
                   korisnik: noviKorisnik,
-                  msg: "Uspesno ste izmenili podatke!",
+                  msg: "Uspešno ste izmenili podatke!",
                 });
               })
               .catch((err) => res.status(400).json("Error: " + err));
           } else {
-            console.log("Slika postoji u bazi");
             let slika = await Slika.findOne({ naziv: file.split(ext)[0] });
             let newImg = fs.readFileSync(folderKorisnici.concat("\\", file));
             if (
@@ -208,17 +207,15 @@ exports.updateKorisnika = async (req, res) => {
                 msg: "Slika je ista! Ostali podaci su izmenjeni!",
               });
             } else {
-              console.log("Slike nisu iste");
               Slika.findOneAndDelete({ naziv: file.split(ext)[0] }, (err) => {
                 if (err) console.log(err);
-                console.log("Stara slika izbrisana iz baze!");
                 var newImg = fs.readFileSync(
                   folderKorisnici.concat("\\", file)
                 );
                 var encImg = newImg.toString("base64");
                 var newItem = new Slika({
                   naziv: file.split(ext)[0],
-                  opis: ".",
+                  opis: "Profilna slika korisnika.",
                   date: new Date(),
                   contentType: mimeType,
                   img: Buffer.from(encImg, "base64"),
@@ -229,14 +226,14 @@ exports.updateKorisnika = async (req, res) => {
                     console.log("Nova slika " + file + " je uneta u bazu!");
                     res.status(200).json({
                       korisnik: noviKorisnik,
-                      msg: "Izmene su uspesne!",
+                      msg: "Izmene su uspešne!",
                     });
                   })
                   .catch((err) =>
                     res.status(400).json({
                       korisnik: noviKorisnik,
                       msg:
-                        "Podaci o korisniku su sacuvani. Problem pri cuvanje slike: " +
+                        "Podaci o korisniku su sačuvani. Problem pri čuvanje slike: " +
                         err,
                     })
                   );

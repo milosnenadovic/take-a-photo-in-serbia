@@ -46,8 +46,10 @@ const Podesavanja = (props) => {
       body: formData,
     }).then((res) => res.json());
     alert(JSON.stringify(res.msg));
-    document.getElementsByName("submit")[0].disabled = true;
-    props.updateKorisnik(podaci);
+    if (res.korisnik) {
+      document.getElementsByName("submit")[0].disabled = true;
+      props.updateKorisnik(podaci);
+    }
   };
 
   const onChangeDrzava = () => {
@@ -264,8 +266,8 @@ const Podesavanja = (props) => {
           className="rounded mt-2 shadow"
         />
         <label
-          for="slikaUpload"
-          class="btn lead mt-2 w-75 bg-white btn-block btn-outlined shadow"
+          htmlFor="slikaUpload"
+          className="btn lead mt-2 w-75 bg-white btn-block btn-outlined shadow"
         >
           Izaberite sliku
         </label>

@@ -84,7 +84,7 @@ class Destinacija extends React.Component {
   };
 
   content = [];
-  renderContent = () => {
+  renderSadrzaj = () => {
     if (this.content.length === 0) {
       for (let i = 1; i < 4; i++) {
         this.content.push(
@@ -116,7 +116,7 @@ class Destinacija extends React.Component {
     } else {
       this.q = this.naziv;
     }
-    this.renderContent();
+    this.renderSadrzaj();
 
     return (
       <div>
@@ -161,7 +161,7 @@ class Destinacija extends React.Component {
           </div>
           <hr className="bg-primary" />
           <p className="m-5 h4" style={{ color: "#003366" }}>
-            Mesta koja treba obići u blizini:{" "}
+            Mesta koja treba obići u blizini:
           </p>
           <div className="m-5 text-center">
             {this.responseZnamenitosti

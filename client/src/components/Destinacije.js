@@ -12,13 +12,6 @@ class Destinacije extends React.Component {
           .toLowerCase()}`
       );
     }
-    if (
-      localStorage.getItem("destinacijaProps") !== undefined &&
-      localStorage.getItem("destinacijaProps") !== null
-    ) {
-      localStorage.removeItem("destinacijaProps");
-    }
-
     let navs = [
       "/destinacije/reke",
       "/destinacije/jezera",

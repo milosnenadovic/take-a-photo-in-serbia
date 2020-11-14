@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 const LogoutForma = (props) => {
-  //if (props.location.onClick === undefined) props.history.goBack();
   const onLogout = () => {
     props.location.onClick();
     props.history.goBack();
@@ -19,7 +18,7 @@ const LogoutForma = (props) => {
       >
         <div className="modal-content">
           <div className="modal-header">
-            <h3 className="text-center">LOGOUT</h3>
+            <h3 className="text-center">ODJAVA</h3>
             <button
               type="button"
               className="close"
@@ -48,25 +47,6 @@ const LogoutForma = (props) => {
     </div>,
     document.querySelector("#modal")
   );
-  /*return ReactDOM.createPortal(
-    <div
-      onClick={() => props.history.goBack()}
-      className="ui dimmer modals visible active"
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="ui standard modal visible active"
-      >
-        <h3>LOGOUT</h3>
-        <p>Da li ste sigurni?</p>
-        <div className="d-flex justify-content-around">
-          <button onClick={() => onLogout()}>Siguran sam</button>
-          <button onClick={() => props.history.goBack()}>Ne, idi nazad</button>
-        </div>
-      </div>
-    </div>,
-    document.querySelector("#modal")
-  );*/
 };
 
 export default LogoutForma;

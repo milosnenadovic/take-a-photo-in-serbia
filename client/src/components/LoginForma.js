@@ -27,7 +27,7 @@ const LoginForma = (props) => {
       >
         <div className="modal-content">
           <div className="modal-header">
-            <h3 className="text-center">LOGIN</h3>
+            <h3 className="text-center">ULOGUJ SE</h3>
             <button
               type="button"
               className="close"
@@ -42,7 +42,7 @@ const LoginForma = (props) => {
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <div className="d-flex align-items-top align-content-stretch mt-2">
                 <label className="mr-2 lead w-25" htmlFor="email">
-                  Email:
+                  E-mail:
                 </label>
                 <input
                   className="rounded w-75"
@@ -55,7 +55,7 @@ const LoginForma = (props) => {
               </div>
               <div className="d-flex align-items-top align-content-stretch mt-2">
                 <label className="mr-2 lead w-25" htmlFor="password">
-                  Password:
+                  Lozinka:
                 </label>
                 <input
                   className="rounded w-75"
