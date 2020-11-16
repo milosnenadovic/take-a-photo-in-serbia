@@ -12,20 +12,6 @@ class Destinacije extends React.Component {
           .toLowerCase()}`
       );
     }
-    let navs = [
-      "/destinacije/reke",
-      "/destinacije/jezera",
-      "/destinacije/planine",
-      "/destinacije/gradovi",
-    ];
-    let ind = navs.indexOf(window.location.pathname);
-    if (ind > -1) navs.splice(ind, 1);
-    let nav = document.getElementById(window.location.pathname);
-    navs.map((nav) =>
-      document.getElementById(nav).classList.remove("font-weight-bold")
-    );
-    nav.classList.add("font-weight-bold");
-
     this.forceUpdate();
   };
 
@@ -72,6 +58,33 @@ class Destinacije extends React.Component {
   };
 
   render() {
+    let navs = [
+      "/destinacije/reke",
+      "/destinacije/jezera",
+      "/destinacije/planine",
+      "/destinacije/gradovi",
+    ];
+
+    //vracanje na prethodnu stranu u slucaju da ne postoji sekcija za destinacije
+    if (
+      !navs.includes(
+        `/destinacije/${window.location.pathname.split("/")[2].toLowerCase()}`
+      )
+    ) {
+      this.props.history.goBack();
+    }
+
+    //postavljanje efekta na navbar
+    setTimeout(() => {
+      let ind = navs.indexOf(window.location.pathname);
+      if (ind > -1) navs.splice(ind, 1);
+      let nav = document.getElementById(window.location.pathname);
+      navs.map((nav) =>
+        document.getElementById(nav).classList.remove("font-weight-bold")
+      );
+      nav.classList.add("font-weight-bold");
+    }, 500);
+
     return (
       <div>
         <div className="container text-center mb-5 pt-5">

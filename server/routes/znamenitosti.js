@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Znamenitosti = require("../models/znamenitost");
+const Destinacija = require("../models/destinacija");
 
 router.get("/", async (req, res) => {
   const znamenitosti = await Znamenitosti.find();
@@ -34,7 +35,15 @@ router.get("/:znamenitost", async (req, res) => {
           znamenitosti.push(znam);
         }
       });
-      res.status(200).json(znamenitosti);
+      if (znamenitosti.length === 0) {
+        const filter = new RegExp(`^${destinacija}$`, "i");
+        const dokument = await Destinacija.findOne({
+          sadržaj: { $elemMatch: { naziv: { $regex: filter } } },
+        });
+        if (!dokument) res.json({ msg: "404" });
+      } else {
+        res.status(200).json(znamenitosti);
+      }
     }
   }
 });

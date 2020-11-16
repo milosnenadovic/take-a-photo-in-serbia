@@ -14,23 +14,10 @@ class Destinacija extends React.Component {
       this.responseZnamenitosti = await axios.get(
         `https://localhost:5000/znamenitosti/${this.naziv}`
       );
+      if (this.responseZnamenitosti.data.msg) {
+        this.props.history.goBack();
+      }
     }
-    let navs = [
-      "/destinacije/reke",
-      "/destinacije/jezera",
-      "/destinacije/planine",
-      "/destinacije/gradovi",
-    ];
-    let url = window.location.pathname.split("/");
-    url.pop();
-    let ind = navs.indexOf(url.join("/"));
-    if (ind > -1) navs.splice(ind, 1);
-    let nav = document.getElementById(url.join("/"));
-    navs.map((nav) =>
-      document.getElementById(nav).classList.remove("font-weight-bold")
-    );
-    nav.classList.add("font-weight-bold");
-
     this.forceUpdate();
   };
 
@@ -117,6 +104,35 @@ class Destinacija extends React.Component {
       this.q = this.naziv;
     }
     this.renderSadrzaj();
+
+    let navs = [
+      "/destinacije/reke",
+      "/destinacije/jezera",
+      "/destinacije/planine",
+      "/destinacije/gradovi",
+    ];
+
+    //vracanje na prethodnu stranu u slucaju da ne postoji sekcija za destinacije
+    if (
+      !navs.includes(
+        `/destinacije/${window.location.pathname.split("/")[2].toLowerCase()}`
+      )
+    ) {
+      this.props.history.goBack();
+    }
+
+    //postavljanje efekta na navbar
+    let url = window.location.pathname.split("/");
+    url.pop();
+    setTimeout(() => {
+      let ind = navs.indexOf(url.join("/"));
+      if (ind > -1) navs.splice(ind, 1);
+      let nav = document.getElementById(url.join("/"));
+      navs.map((nav) =>
+        document.getElementById(nav).classList.remove("font-weight-bold")
+      );
+      nav.classList.add("font-weight-bold");
+    }, 500);
 
     return (
       <div>

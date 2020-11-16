@@ -36,10 +36,8 @@ class App extends React.Component {
             />
             <Route path="/" exact component={Home} />
             <Route path="/podesavanja" component={Podesavanja} />
-            <Route path="/destinacije/reke" exact component={Destinacije} />
-            <Route path="/destinacije/jezera" exact component={Destinacije} />
-            <Route path="/destinacije/planine" exact component={Destinacije} />
-            <Route path="/destinacije/gradovi" exact component={Destinacije} />
+            <Route path="/destinacije/:destinacije" exact component={Destinacije} />
+            
             <Route path="/destinacije/reke/:naziv" component={Destinacija} />
             <Route path="/destinacije/jezera/:naziv" component={Destinacija} />
             <Route path="/destinacije/planine/:naziv" component={Destinacija} />
