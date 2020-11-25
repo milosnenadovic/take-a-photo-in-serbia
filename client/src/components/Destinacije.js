@@ -16,6 +16,9 @@ class Destinacije extends React.Component {
   };
 
   renderDestinacije = (listaDestinacija) => {
+    let obradaOpisa = (opis) => {
+      return opis.substring(0, 240).concat("...");
+    };
     let content = listaDestinacija.map((des) => {
       let html = [];
       for (let i = 1; i < 4; i++) {
@@ -48,7 +51,7 @@ class Destinacije extends React.Component {
               {des.naziv.toUpperCase()}
             </Link>
             <div className="d-flex">{html}</div>
-            <p className="p-4">{des.opis}</p>
+            <p className="p-4" style={{fontSize: 16}}>{obradaOpisa(des.opis)}</p>
           </div>
           <hr className="bg-primary w-100" />
         </Fragment>
@@ -90,7 +93,10 @@ class Destinacije extends React.Component {
         <div className="container text-center mb-5 pt-5">
           <h2
             className="display-4 m-5 font-weight-bold"
-            style={{ color: "#003366", fontFamily: "Commissioner" }}
+            style={{
+              color: "#003366",
+              textShadow: "3px 3px 6px #fff",
+            }}
           >
             {window.location.pathname.split("/")[2].toUpperCase()}
           </h2>

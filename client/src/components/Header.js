@@ -273,7 +273,9 @@ const Header = (props) => {
                   className="pr-2 text-right lead"
                   style={{ color: "#115599", fontSize: 16 }}
                 >
-                  {!props.auth.korisnik.ime && !props.auth.korisnik.prezime ? props.auth.korisnik.email.split("@")[0] : ""}
+                  {!props.auth.korisnik.ime && !props.auth.korisnik.prezime
+                    ? props.auth.korisnik.email.split("@")[0]
+                    : ""}
                   {props.auth.korisnik.ime ? props.auth.korisnik.ime : ""}
                   {props.auth.korisnik.prezime
                     ? ` ${props.auth.korisnik.prezime}`
@@ -381,9 +383,8 @@ const Header = (props) => {
   return (
     <Fragment>
       <h1
-        className="display-2 text-center mb-0 text-weight-bold p-5 align-top"
+        className="display-2 text-center mb-0 text-weight-bold p-5 align-top text-primary"
         style={{
-          color: "#ff3333",
           backgroundColor: "#003366",
           textShadow: "3px 3px 6px #fff",
         }}

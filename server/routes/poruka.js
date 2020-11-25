@@ -1,13 +1,14 @@
 const router = require("express").Router();
 const Poruka = require("../models/poruka");
 const nodemailer = require("nodemailer");
+//require("dotenv").config();
 
 const posaljiPotvrdu = (email) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "takeaphotoinserbia@gmail.com",
-      pass: "TakeAPhotoinSerbia2020#",
+      user: process.env.USER_EMAIL,
+      pass: process.env.USER_PASSWORD,
     },
   });
 

@@ -12,7 +12,7 @@ const Footer = (props) => {
         style={{
           backgroundColor: "#003366",
           color: "#CCCCDD",
-          boxShadow: "0px 0px 6px 4px",
+          boxShadow: "0px 0px 10px 3px #003366",
           position: "relative",
           bottom: "0px",
           left: "0px",

@@ -139,7 +139,10 @@ class Destinacija extends React.Component {
         <div className="container text-center mb-5 pt-5">
           <h2
             className="text-uppercase display-4 font-weight-bold m-5"
-            style={{ color: "#003366", fontFamily: "Commissioner" }}
+            style={{
+              color: "#003366",
+              textShadow: "3px 3px 6px #fff",
+            }}
           >
             {this.props.lokacija.lokacija
               ? this.props.lokacija.lokacija.naziv

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Top = (props) => {
   let obradaOpisa = (opis) => {
-    return opis.substring(0, 150).concat("...");
+    return opis.substring(0, 120).concat("...");
   };
 
   return (

@@ -1,16 +1,61 @@
-const https = require("https");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
+const https = require("https");
 const mime = require("mime");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 const Slika = require("./models/slika");
 const Destinacija = require("./models/destinacija");
-require("dotenv/config");
-const fileUpload = require("express-fileupload");
+require("dotenv").config();
 
+//Kreiranje Express.js aplikacije
 const app = express();
+
+//Aplikaciona logika
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(fileUpload({ createParentPath: true }));
+
+//Rute
+app.use("/korisnici", require("./routes/korisnici"));
+app.use("/destinacije", require("./routes/destinacije"));
+app.use("/znamenitosti", require("./routes/znamenitosti"));
+app.use("/poruka", require("./routes/poruka"));
+app.use("/slike", require("./routes/slike"));
+
+//Pocetak aplikacije - prva informacija koja se salje na browser
+app.get("/", async (req, res) => {
+  let topLista = [];
+  let lista = [];
+  let destinacije = await Destinacija.find();
+  destinacije.forEach((destinacija) => {
+    let listaKategorije = [];
+    var top = destinacija.sadržaj[0];
+    destinacija.sadržaj.forEach((des) => {
+      listaKategorije.push(des.naziv);
+      if (des.pregledi > top.pregledi) top = des;
+    });
+    topLista.push(top);
+    lista.push(listaKategorije);
+  });
+  res.status(200).json({ topLista, lista });
+});
+
+//Definisanje vrednosti porta na kojem ce server osluskivati dogadjaje
+const PORT = process.env.PORT || 5000;
+
+//Kreiranje https servera
+const httpsServer = https.createServer(
+  {
+    cert: fs.readFileSync(path.join(__dirname, "ssl", "server.pem")),
+    key: fs.readFileSync(path.join(__dirname, "ssl", "server.key")),
+    ca: fs.readFileSync(path.join(__dirname, "ssl", "ca.pem")),
+  },
+  app
+);
 
 //Podesavanje baze podataka
 const opcije = {
@@ -20,20 +65,24 @@ const opcije = {
   useFindAndModify: false,
 };
 
-mongoose.connect(process.env.DB_CONNECTION, opcije);
+//Konekcija na bazu
+mongoose
+  .connect(process.env.DB_CONNECTION, opcije)
+  .then(() =>
+    httpsServer.listen(PORT, () => console.log("Server je pokrenut na portu: " + PORT))
+  )
+  .catch((error) => console.log(error));
 
+//Logovanje uspesne konekcije i vremena
 const konekcija = mongoose.connection;
-
 konekcija.on("connected", () =>
   console.log(
     `Konekcija na bazu ostvarena u ${new Date().toLocaleTimeString()}`
   )
 );
 
+//Ucitavanja slika dodatih u folder - a ne postoje u bazi
 let folderGalerija = path.join(__dirname.split("server")[0], "galerija");
-
-let folderKorisnici = path.join(__dirname.split("server")[0], "korisnici");
-
 konekcija.once("open", () => {
   fs.readdir(folderGalerija, (err, files) => {
     if (err) {
@@ -63,77 +112,3 @@ konekcija.once("open", () => {
     });
   });
 });
-
-//Aplikaciona logika
-app.use(fileUpload({ createParentPath: true }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-
-//Ruta za korisnike
-app.use("/korisnici", require("./routes/korisnici"));
-//Ruta za destinacije
-app.use("/destinacije", require("./routes/destinacije"));
-//Ruta za znamenitosti
-app.use("/znamenitosti", require("./routes/znamenitosti"));
-//Ruta za poruke
-app.use("/poruka", require("./routes/poruka"));
-
-app.get("/", async (req, res) => {
-  let topLista = [];
-  let lista = [];
-  let destinacije = await Destinacija.find();
-  destinacije.forEach((destinacija) => {
-    let listaKategorije = [];
-    var top = destinacija.sadržaj[0];
-    destinacija.sadržaj.forEach((des) => {
-      listaKategorije.push(des.naziv);
-      if (des.pregledi > top.pregledi) top = des;
-    });
-    topLista.push(top);
-    lista.push(listaKategorije);
-  });
-  res.status(200).json({ topLista, lista });
-});
-
-app.get("/slike/:slika", async (req, res) => {
-  let filename = req.params.slika;
-  await Slika.findOne(
-    { naziv: filename.replace(" ", "_").toLowerCase() },
-    async (error, results) => {
-      if (results !== null && results !== undefined) {
-        res.setHeader("content-type", results.contentType);
-        let buff = Buffer.from(results.img.buffer, "base64");
-        res.send(buff);
-      } else {
-        if(filename.includes("korisnik_")){
-          await Slika.findOne({naziv: "korisnik_"}, (err, resl) => {
-            if (resl !== null && resl !== undefined) {
-              res.setHeader("content-type", resl.contentType);
-              let buff = Buffer.from(resl.img.buffer, "base64");
-              res.send(buff);
-            } else {
-              res.status(200).json({ err: "Slika nije pronadjena" });
-            }
-          });
-        }
-      }
-    }
-  );
-});
-
-//Kreiranje https servera
-const sslServer = https.createServer(
-  {
-    cert: fs.readFileSync(path.join(__dirname, "ssl", "server.pem")),
-    key: fs.readFileSync(path.join(__dirname, "ssl", "server.key")),
-    ca: fs.readFileSync(path.join(__dirname, "ssl", "ca.pem")),
-  },
-  app
-);
-
-const PORT = process.env.PORT || 5000;
-
-sslServer.listen(PORT, () =>
-  console.log("Server je pokrenut... Port: " + PORT)
-);
