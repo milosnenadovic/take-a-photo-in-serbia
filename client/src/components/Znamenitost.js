@@ -43,7 +43,7 @@ class Znamenitost extends React.Component {
             Galerija:
           </p>
           <img
-            src={`https://localhost:5000/slike/${
+            src={`http://localhost:5000/slike/${
               localStorage.getItem("znamenitostProps") &&
               JSON.parse(
                 localStorage.getItem("znamenitostProps")
@@ -126,7 +126,7 @@ class Znamenitost extends React.Component {
             <div className="d-flex justify-content-around">
               <img
                 id="korisnik-komentar"
-                src={`https://localhost:5000/slike/korisnik_${kom.autor}`}
+                src={`http://localhost:5000/slike/korisnik_${kom.autor}`}
                 alt="NoPic"
                 className="rounded mt-2 mb-1 mr-3 ml-1"
                 style={{

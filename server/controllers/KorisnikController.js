@@ -6,12 +6,12 @@ const fs = require("fs");
 const mime = require("mime");
 const Slika = require("../models/slika");
 
-exports.sviKorisnici = async (req, res) => {
+exports.getKorisnici = async (req, res) => {
   const korisnici = await Korisnik.find();
   res.json(korisnici);
 };
 
-exports.jedanKorisnik = async (req, res) => {
+exports.getKorisnik = async (req, res) => {
   const korisnici = await Korisnik.find();
   const found = korisnici.some(
     (korisnik) => korisnik._id.toString() === req.params.id
@@ -27,7 +27,7 @@ exports.jedanKorisnik = async (req, res) => {
   }
 };
 
-exports.dodajKorisnika = (req, res) => {
+exports.dodajKorisnik = (req, res) => {
   const emailKorisnika = req.body.email;
   const passwordKorisnika = req.body.password;
   Korisnik.findOne({ email: emailKorisnika }, (err, existingUser) => {
@@ -54,7 +54,7 @@ exports.dodajKorisnika = (req, res) => {
   });
 };
 
-exports.loginKorisnika = (req, res) => {
+exports.loginKorisnik = (req, res) => {
   const emailKorisnika = req.body.email;
   const passwordKorisnika = req.body.password;
   Korisnik.findOne({ email: emailKorisnika }, (err, existingUser) => {
@@ -102,7 +102,7 @@ exports.loginKorisnika = (req, res) => {
   });
 };
 
-exports.logoutKorisnika = async (req, res) => {
+exports.logoutKorisnik = async (req, res) => {
   const users = await Korisnik.find();
   const validUser = await users.find((korisnik) =>
     korisnik.refreshTokens.includes(req.body.token)
@@ -123,7 +123,7 @@ exports.logoutKorisnika = async (req, res) => {
   }
 };
 
-exports.updateKorisnika = async (req, res) => {
+exports.updateKorisnik = async (req, res) => {
   let email = req.body.email;
   let podaci = req.body;
 
@@ -246,7 +246,7 @@ exports.updateKorisnika = async (req, res) => {
   }
 };
 
-exports.ukloniKorisnika = (req, res) => {
+exports.deleteKorisnik = (req, res) => {
   Korisnik.findByIdAndDelete(req.params.id)
     .then(() => res.json("Korisnik uklonjen."))
     .catch((err) => res.status(400).json("error: " + err));

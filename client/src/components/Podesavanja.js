@@ -41,7 +41,7 @@ const Podesavanja = (props) => {
     } else {
       podaci.slika = props.korisnik.slika;
     }
-    const res = await fetch("https://localhost:5000/korisnici/update", {
+    const res = await fetch("http://localhost:5000/korisnici/update", {
       method: "PATCH",
       body: formData,
     }).then((res) => res.json());
@@ -259,7 +259,7 @@ const Podesavanja = (props) => {
         <img
           id="korisnik-header"
           style={{ width: 200, height: 200 }}
-          src={`https://localhost:5000/slike/korisnik_${
+          src={`http://localhost:5000/slike/korisnik_${
             props.korisnik.slika ? props.korisnik.email : ""
           }`}
           alt="Slika korisnika"

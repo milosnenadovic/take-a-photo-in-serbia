@@ -7,7 +7,7 @@ class Destinacije extends React.Component {
   componentDidMount = async () => {
     if (!this.response) {
       this.response = await axios.get(
-        `https://localhost:5000/destinacije/${window.location.pathname
+        `http://localhost:5000/destinacije/${window.location.pathname
           .split("/")[2]
           .toLowerCase()}`
       );
@@ -24,7 +24,7 @@ class Destinacije extends React.Component {
       for (let i = 1; i < 4; i++) {
         html.push(
           <img
-            src={`https://localhost:5000/slike/${des.naziv
+            src={`http://localhost:5000/slike/${des.naziv
               .split(" ")
               .join("_")
               .toLowerCase()}${i}`}

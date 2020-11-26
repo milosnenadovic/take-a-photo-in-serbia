@@ -283,7 +283,7 @@ const Header = (props) => {
                 </span>
                 <img
                   id="korisnik-header"
-                  src={`https://localhost:5000/slike/korisnik_${
+                  src={`http://localhost:5000/slike/korisnik_${
                     props.auth.korisnik.slika ? props.auth.korisnik.email : ""
                   }`}
                   alt="Slika korisnika"

@@ -12,7 +12,7 @@ class Destinacija extends React.Component {
     );
     if (!this.responseZnamenitosti) {
       this.responseZnamenitosti = await axios.get(
-        `https://localhost:5000/znamenitosti/${this.naziv}`
+        `http://localhost:5000/znamenitosti/${this.naziv}`
       );
       if (this.responseZnamenitosti.data.msg) {
         this.props.history.goBack();
@@ -34,7 +34,7 @@ class Destinacija extends React.Component {
         sadrzaj.push(
           <div className="d-flex flex-center m-3" key={e.naziv}>
             <img
-              src={`https://localhost:5000/slike/${e.naziv
+              src={`http://localhost:5000/slike/${e.naziv
                 .split(" ")
                 .join("_")
                 .toLowerCase()}`}
@@ -76,7 +76,7 @@ class Destinacija extends React.Component {
       for (let i = 1; i < 4; i++) {
         this.content.push(
           <img
-            src={`https://localhost:5000/slike/${this.naziv}${i}`}
+            src={`http://localhost:5000/slike/${this.naziv}${i}`}
             alt={`Slika za destinaciju ${this.naziv}`}
             key={`${this.naziv.split("_").join(" ")}${i}`}
             className="m-4"

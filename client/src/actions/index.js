@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 
 const apiJSON = axios.create({
-  baseURL: "https://localhost:5000",
+  baseURL: "http://localhost:5000",
 });
 
 const proveraStorage = (lokacija, data) => {

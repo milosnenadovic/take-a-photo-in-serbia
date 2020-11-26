@@ -38,7 +38,7 @@ const Top = (props) => {
       {props.content[props.ind] ? (
         <Fragment>
           <img
-            src={`https://localhost:5000/slike/${props.content[props.ind].naziv
+            src={`http://localhost:5000/slike/${props.content[props.ind].naziv
               .replace(" ", "_")
               .toLowerCase()}1`}
             alt={"Slika: " + props.content[props.ind].naziv}

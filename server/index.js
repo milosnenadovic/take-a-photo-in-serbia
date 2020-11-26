@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const https = require("https");
 const mime = require("mime");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -47,16 +46,6 @@ app.get("/", async (req, res) => {
 //Definisanje vrednosti porta na kojem ce server osluskivati dogadjaje
 const PORT = process.env.PORT || 5000;
 
-//Kreiranje https servera
-const httpsServer = https.createServer(
-  {
-    cert: fs.readFileSync(path.join(__dirname, "ssl", "server.pem")),
-    key: fs.readFileSync(path.join(__dirname, "ssl", "server.key")),
-    ca: fs.readFileSync(path.join(__dirname, "ssl", "ca.pem")),
-  },
-  app
-);
-
 //Podesavanje baze podataka
 const opcije = {
   useNewUrlParser: true,
@@ -69,7 +58,7 @@ const opcije = {
 mongoose
   .connect(process.env.DB_CONNECTION, opcije)
   .then(() =>
-    httpsServer.listen(PORT, () => console.log("Server je pokrenut na portu: " + PORT))
+    app.listen(PORT, () => console.log("Server je pokrenut na portu: " + PORT))
   )
   .catch((error) => console.log(error));
 

@@ -5,7 +5,7 @@ import axios from "axios";
 
 const KontaktForma = (props) => {
   const onSaljiPoruku = async ({ poruka, email }) => {
-    const response = await axios.post("https://localhost:5000/poruka", {
+    const response = await axios.post("http://localhost:5000/poruka", {
       poruka,
       email,
       registrovanKorisnik:

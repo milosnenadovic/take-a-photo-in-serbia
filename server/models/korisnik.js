@@ -11,11 +11,8 @@ const korisnikSchema = new Schema(
     prezime: String,
     mesto: String,
     slika: Boolean,
-    /*drzava: { type: String },
-  tipNaloga: { type: String, default: '' }
-  aktivan: { type: Boolean, default: false },
-  telefon: { type: String },
-  foto: { type: Image },*/
+    /*aktivan: { type: Boolean, default: false },
+    telefon: { type: String },*/
     refreshTokens: [String],
   },
   { collection: "korisnici" }

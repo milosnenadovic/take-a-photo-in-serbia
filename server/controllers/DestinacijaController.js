@@ -1,6 +1,6 @@
 const Destinacija = require("../models/destinacija");
 
-exports.sveDestinacije = async (req, res) => {
+exports.getDestinacije = async (req, res) => {
   const naziv =
     req.params.destinacije.charAt(0).toUpperCase() +
     req.params.destinacije.slice(1);
@@ -17,8 +17,7 @@ exports.sveDestinacije = async (req, res) => {
   }
 };
 
-exports.jednaDestinacija = async (req, res) => {
-  //uvecanje pregleda destinacije
+exports.getDestinacija = async (req, res) => {
   const naziv = req.params.destinacija.split("_").join(" ");
   const filter = new RegExp(`^${naziv}$`, "i");
   const dokument = await Destinacija.findOne({

@@ -67,7 +67,7 @@ const SignupForma = (props) => {
                     minLength: {
                       value: 6,
                       message:
-                        "Prekratak password (mora imati 6 ili vise karaktera)!",
+                        "Kratak password (mora imati 6 ili vise karaktera)!",
                     },
                   })}
                 />
