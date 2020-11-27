@@ -19,9 +19,8 @@ const apiJSON = axios.create({
 const proveraStorage = (lokacija, data) => {
   if (localStorage.getItem("znamenitostProps")) {
     console.log(localStorage.getItem("znamenitostProps"));
-    if (JSON.parse(
-      localStorage
-        .getItem("znamenitostProps"))
+    if (
+      JSON.parse(localStorage.getItem("znamenitostProps"))
         .naziv.toLowerCase()
         .split(" ")
         .join("_") !== lokacija
@@ -68,6 +67,7 @@ export const formaSet = (forma) => {
 
 export const topSet = () => async (dispatch) => {
   let response = await apiJSON.get("/");
+  console.log(response.data);
   const responseSlika0 = await apiJSON.get(
     `/slike/${response.data.topLista[0].naziv}1`
   );
@@ -92,6 +92,7 @@ export const topSet = () => async (dispatch) => {
 
 export const destinacijeGet = (destinacije) => async (dispatch) => {
   let response = await apiJSON.get(`/destinacije/${destinacije}`);
+  console.log(response.data);
   dispatch({
     type: DESTINACIJE,
     payload: response.data,
@@ -124,6 +125,7 @@ export const updateKorisnik = (podaci) => {
 };
 
 export const getDestinacija = (destinacija) => async (dispatch) => {
+  console.log(destinacija);
   const response = await apiJSON.get(`/destinacije/${destinacija}`);
   dispatch({ type: GET_DESTINACIJA, payload: response.data[0] });
 };

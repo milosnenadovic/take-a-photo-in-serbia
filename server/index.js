@@ -6,7 +6,11 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const Slika = require("./models/slika");
-const Destinacija = require("./models/destinacija");
+const Reke = require("./models/reke");
+const Jezera = require("./models/jezera");
+const Planine = require("./models/planine");
+const Gradovi = require("./models/gradovi");
+const Destinacije = require("./models/destinacije");
 require("dotenv").config();
 
 //Kreiranje Express.js aplikacije
@@ -25,22 +29,20 @@ app.use("/znamenitosti", require("./routes/znamenitosti"));
 app.use("/poruka", require("./routes/poruka"));
 app.use("/slike", require("./routes/slike"));
 
-//Pocetak aplikacije - prva informacija koja se salje na browser
+//Pocetak aplikacije - prva informacija koja se salje na browser: lista naziva destinacija i top lista za destinacije
 app.get("/", async (req, res) => {
-  let topLista = [];
   let lista = [];
-  let destinacije = await Destinacija.find();
-  destinacije.forEach((destinacija) => {
-    let listaKategorije = [];
-    var top = destinacija.sadržaj[0];
-    destinacija.sadržaj.forEach((des) => {
-      listaKategorije.push(des.naziv);
-      if (des.pregledi > top.pregledi) top = des;
-    });
-    topLista.push(top);
-    lista.push(listaKategorije);
+  let topLista = [];
+  let topReka = await Reke.find().sort({ pregledi: -1 }).limit(1);
+  let topJezero = await Jezera.find().sort({ pregledi: -1 }).limit(1);
+  let topPlanina = await Planine.find().sort({ pregledi: -1 }).limit(1);
+  let topGrad = await Gradovi.find().sort({ pregledi: -1 }).limit(1);
+  topLista = [topReka[0], topJezero[0], topPlanina[0], topGrad[0]];
+  let destinacije = await Destinacije.find();
+  destinacije.forEach((des) => {
+    lista.push(des.sadržaj);
   });
-  res.status(200).json({ topLista, lista });
+  res.status(200).json({ topLista: topLista, lista: lista });
 });
 
 //Definisanje vrednosti porta na kojem ce server osluskivati dogadjaje

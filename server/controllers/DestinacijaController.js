@@ -1,66 +1,64 @@
-const Destinacija = require("../models/destinacija");
+const Reke = require("../models/reke");
+const Jezera = require("../models/jezera");
+const Planine = require("../models/planine");
+const Gradovi = require("../models/gradovi");
 
+// Vraća sve destinacije zadatog tipa
 exports.getDestinacije = async (req, res) => {
-  const naziv =
-    req.params.destinacije.charAt(0).toUpperCase() +
-    req.params.destinacije.slice(1);
-  const destinacije = await Destinacija.findOne({
-    tip: naziv,
-  });
-
+  const tip = req.params.tip;
+  let destinacije;
+  switch (tip) {
+    case "reke":
+      destinacije = await Reke.find();
+      break;
+    case "jezera":
+      destinacije = await Jezera.find();
+      break;
+    case "planine":
+      destinacije = await Planine.find();
+      break;
+    case "gradovi":
+      destinacije = await Gradovi.find();
+      break;
+    default:
+      destinacije = null;
+  }
   if (!destinacije) {
     res.status(404).json({
-      msg: `Ne postoji sekcija za destinacije: ${req.params.destinacije}`,
+      msg: `Ne postoji sekcija za destinacije: ${tip}.`,
     });
   } else {
     res.status(200).json(destinacije);
   }
 };
 
+// Vraća određenu destinaciju
 exports.getDestinacija = async (req, res) => {
-  const naziv = req.params.destinacija.split("_").join(" ");
-  const filter = new RegExp(`^${naziv}$`, "i");
-  const dokument = await Destinacija.findOne({
-    sadržaj: { $elemMatch: { naziv: { $regex: filter } } },
-  });
-  if (dokument) {
-    const destinacija = dokument["sadržaj"].filter(
-      (d) => d.naziv.toLowerCase() === naziv
-    );
-    destinacija[0].pregledi++;
-    await Destinacija.updateOne(
-      {
-        sadržaj: { $elemMatch: { naziv: { $regex: filter } } },
-      },
-      { $set: { "sadržaj.$.pregledi": destinacija[0].pregledi } },
-      {
-        new: true,
-      }
-    );
-    const destinacije = await Destinacija.findOne({
-      tip:
-        req.params.destinacije.charAt(0).toUpperCase() +
-        req.params.destinacije.slice(1),
+  let tip = req.params.tip;
+  let naziv = req.params.destinacija.split("_").join(" ");
+  let filter = new RegExp(`^${naziv}$`, "i");
+  let destinacija = null;
+  switch (tip) {
+    case "reke":
+      destinacija = await Reke.findOne({ naziv: { $regex: filter } });
+      break;
+    case "jezera":
+      destinacija = await Jezera.find({ naziv: { $regex: filter } });
+      break;
+    case "planine":
+      destinacija = await Planine.find({ naziv: { $regex: filter } });
+      break;
+    case "gradovi":
+      destinacija = await Gradovi.find({ naziv: { $regex: filter } });
+      break;
+    default:
+      destinacija = null;
+  }
+  if (!destinacija) {
+    res.status(404).json({
+      msg: `Ne postoji destinacija: ${naziv}!`,
     });
-    if (!destinacije) {
-      res.status(404).json({
-        msg: `Ne postoji sekcija za destinacije: ${req.params.destinacije}!`,
-      });
-    } else {
-      const destinacija = await destinacije.sadržaj.filter(
-        (des) =>
-          des.naziv.toLowerCase() ===
-          req.params.destinacija.split("_").join(" ")
-      );
-      if (!destinacija) {
-        res.status(404).json({
-          msg: `Ne postoji destinacija: ${req.params.destinacija}, u sekciji ${req.params.destinacije}!`,
-        });
-      } else {
-        res.status(200).json(destinacija);
-      }
-    }
   } else {
-    res.status(404).json({ msg: "404" });
+    res.status(200).json(destinacija);
   }
 };

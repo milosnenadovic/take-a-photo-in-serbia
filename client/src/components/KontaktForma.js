@@ -9,7 +9,7 @@ const KontaktForma = (props) => {
       poruka,
       email,
       registrovanKorisnik:
-        props.location.props.korisnik.ulogovan === undefined ? false : true,
+        props.location.props.korisnik.ulogovan ? true : false,
     });
     alert(response.data.msg);
     props.history.goBack();

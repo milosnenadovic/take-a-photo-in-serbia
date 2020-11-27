@@ -11,11 +11,12 @@ class Destinacije extends React.Component {
           .split("/")[2]
           .toLowerCase()}`
       );
+      this.forceUpdate();
     }
-    this.forceUpdate();
   };
 
   renderDestinacije = (listaDestinacija) => {
+    console.log(listaDestinacija);
     let obradaOpisa = (opis) => {
       return opis.substring(0, 240).concat("...");
     };
@@ -51,7 +52,9 @@ class Destinacije extends React.Component {
               {des.naziv.toUpperCase()}
             </Link>
             <div className="d-flex">{html}</div>
-            <p className="p-4" style={{fontSize: 16}}>{obradaOpisa(des.opis)}</p>
+            <p className="p-4" style={{ fontSize: 16 }}>
+              {obradaOpisa(des.opis)}
+            </p>
           </div>
           <hr className="bg-primary w-100" />
         </Fragment>
@@ -103,7 +106,7 @@ class Destinacije extends React.Component {
           <hr className="bg-primary" />
           <div>
             {this.response
-              ? this.renderDestinacije(this.response.data.sadržaj)
+              ? this.renderDestinacije(this.response.data)
               : "loading"}
           </div>
         </div>

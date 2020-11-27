@@ -11,12 +11,14 @@ class Destinacija extends React.Component {
       window.location.pathname.split("destinacije/")[1]
     );
     if (!this.responseZnamenitosti) {
-      this.responseZnamenitosti = await axios.get(
-        `http://localhost:5000/znamenitosti/${this.naziv}`
-      );
-      if (this.responseZnamenitosti.data.msg) {
-        this.props.history.goBack();
+      if (this.props.lokacija.lokacija.znamenitosti) {
+        this.responseZnamenitosti = await axios.get(
+          `http://localhost:5000/znamenitosti/${this.naziv}`
+        );
       }
+    }
+    if (this.responseZnamenitosti.data.msg) {
+      this.props.history.goBack();
     }
     this.forceUpdate();
   };
@@ -26,7 +28,7 @@ class Destinacija extends React.Component {
   };
 
   renderZnamenitosti = (sveZnamenitosti) => {
-    if (sveZnamenitosti.length < 1) {
+    if (sveZnamenitosti.msg) {
       return "Za ovu destinaciju trenutno nema znamenitosti!";
     } else {
       let sadrzaj = [];
@@ -128,8 +130,8 @@ class Destinacija extends React.Component {
       let ind = navs.indexOf(url.join("/"));
       if (ind > -1) navs.splice(ind, 1);
       let nav = document.getElementById(url.join("/"));
-      navs.map((nav) =>
-        document.getElementById(nav).classList.remove("font-weight-bold")
+      navs.map((n) =>
+        document.getElementById(n).classList.remove("font-weight-bold")
       );
       nav.classList.add("font-weight-bold");
     }, 500);

@@ -17,10 +17,13 @@ exports.getSlika = async (req, res) => {
               let buff = Buffer.from(resl.img.buffer, "base64");
               res.send(buff);
             } else {
-              console.log(error);
-              res.status(200).json({ err: "Slika nije pronadjena" });
+              console.log(`Greška pri pronalasku slike za korisnika ${filename.split("korisnik_")[1]}: ${error}`);
+              res.status(404).json({ msg: "Slika nije pronađena." });
             }
           });
+        } else {
+          console.log(`Greška pri pronalasku slike koja nije za korisnika a ne postoji zadati naziv ${filename.replace(" ", "_").toLowerCase()}: ${error}`);
+          res.status(404).json({ msg: "Slika ne postoji u bazi." });
         }
       }
     }

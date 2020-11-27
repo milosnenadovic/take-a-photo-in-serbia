@@ -6,20 +6,17 @@ const fs = require("fs");
 const mime = require("mime");
 const Slika = require("../models/slika");
 
+// Vraća listu svih korisnika
 exports.getKorisnici = async (req, res) => {
   const korisnici = await Korisnik.find();
   res.json(korisnici);
 };
 
+// Vraća korisnika iz baze sa prosleđenim id-em
 exports.getKorisnik = async (req, res) => {
-  const korisnici = await Korisnik.find();
-  const found = korisnici.some(
-    (korisnik) => korisnik._id.toString() === req.params.id
-  );
-  if (found) {
-    res.json(
-      korisnici.filter((korisnik) => korisnik._id.toString() === req.params.id)
-    );
+  const korisnik = await Korisnik.findById(req.params.id);
+  if (korisnik) {
+    res.json(korisnik);
   } else {
     res.status(400).json({
       msg: `Korisnik sa datim korisnickim imenom: ${req.params.id} nije pronadjen!`,
@@ -27,6 +24,7 @@ exports.getKorisnik = async (req, res) => {
   }
 };
 
+// Registracija korisnika - dodaje ga u bazu
 exports.dodajKorisnik = (req, res) => {
   const emailKorisnika = req.body.email;
   const passwordKorisnika = req.body.password;
@@ -54,6 +52,7 @@ exports.dodajKorisnik = (req, res) => {
   });
 };
 
+// Logovanje korisnika
 exports.loginKorisnik = (req, res) => {
   const emailKorisnika = req.body.email;
   const passwordKorisnika = req.body.password;
@@ -102,6 +101,7 @@ exports.loginKorisnik = (req, res) => {
   });
 };
 
+// Odjava korisnika
 exports.logoutKorisnik = async (req, res) => {
   const users = await Korisnik.find();
   const validUser = await users.find((korisnik) =>
@@ -123,10 +123,10 @@ exports.logoutKorisnik = async (req, res) => {
   }
 };
 
+// Update podataka korisnika
 exports.updateKorisnik = async (req, res) => {
   let email = req.body.email;
   let podaci = req.body;
-
   if (!req.files) {
     console.log("Nema fajlova!");
     if (Object.keys(podaci).length > 1) {
@@ -147,12 +147,10 @@ exports.updateKorisnik = async (req, res) => {
     } catch (e) {
       res.status(500).send(e);
     }
-
     podaci.slika = true;
     let noviKorisnik = await Korisnik.findOneAndUpdate({ email }, podaci, {
       new: true,
     });
-
     let folderKorisnici = path.join(__dirname.split("server")[0], "korisnici");
     fs.readdir(folderKorisnici, (err, files) => {
       console.log("Files: ");
@@ -232,9 +230,7 @@ exports.updateKorisnik = async (req, res) => {
                   .catch((err) =>
                     res.status(400).json({
                       korisnik: noviKorisnik,
-                      msg:
-                        "Podaci o korisniku su sačuvani. Problem pri čuvanje slike: " +
-                        err,
+                      msg: `Podaci o korisniku su sačuvani. Problem pri čuvanje slike: ${err}`,
                     })
                   );
               });
@@ -246,8 +242,13 @@ exports.updateKorisnik = async (req, res) => {
   }
 };
 
+// Uklanjanje korisnika iz baze
 exports.deleteKorisnik = (req, res) => {
   Korisnik.findByIdAndDelete(req.params.id)
-    .then(() => res.json("Korisnik uklonjen."))
-    .catch((err) => res.status(400).json("error: " + err));
+    .then(() => res.json({ msg: "Korisnik uklonjen." }))
+    .catch((err) =>
+      res
+        .status(400)
+        .json({ msg: `Greška: ${err}. Korisnik nije pronađen u bazi.` })
+    );
 };

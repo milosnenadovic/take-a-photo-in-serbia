@@ -20,8 +20,10 @@ const posaljiPotvrdu = (email) => {
   transporter.sendMail(opcije, (err, info) => {
     if (err) {
       console.log("err: " + err);
+      return false;
     } else {
       console.log("info: " + info.response);
+      return true;
     }
   });
 };
@@ -43,15 +45,26 @@ exports.posaljiPoruku = async (req, res) => {
     novaPoruka
       .save()
       .then(() => {
-        res.status(200).json({
-          msg: `Poruka uspesno poslata! Potvrdni email ce biti poslat na adresu: ${email}`,
-        });
-        posaljiPotvrdu(email);
+        let potvrda = posaljiPotvrdu(email);
+        if (potvrda) {
+          res.status(200).json({
+            msg: `Poruka uspešno poslata! Potvrdni email će biti poslat na adresu: ${email}.`,
+          });
+        } else {
+          res.status(200).json({
+            msg: "Poruka uspešno poslata!",
+          });
+        }
       })
-      .catch((err) => res.status(400).json("Error: " + err));
+      .catch((err) =>
+        res.status(400).json({
+          msg: "Poruka koju ste poslali nije uspešno sačuvana!",
+        })
+      );
   } else {
     res.status(200).json({
-      msg: `Poruka koju zelite poslati nije ispravna! Proveriti ispravnost email adrese i broj karaktera u poruci!`,
+      msg:
+        "Poruka koju zelite poslati nije ispravna! Proveriti ispravnost email adrese i broj karaktera u poruci!",
     });
   }
 };
