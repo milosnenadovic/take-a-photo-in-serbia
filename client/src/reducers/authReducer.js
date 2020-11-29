@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP, FORMA, LOGOUT, UPDATE } from "../actions/types";
+import { LOGIN, SIGNUP, LOGOUT, UPDATE } from "../actions/types";
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -28,10 +28,7 @@ export default (state = [], action) => {
           email: action.payload.email,
           password: action.payload.password,
         },
-        forma: "",
       };
-    case FORMA:
-      return { ...state, forma: action.payload };
     case UPDATE:
       return {
         ...state,

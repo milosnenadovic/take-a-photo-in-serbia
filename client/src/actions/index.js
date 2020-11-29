@@ -2,13 +2,13 @@ import {
   SIGNUP,
   LOGIN,
   LOGOUT,
-  FORMA,
   TOP_LISTA,
   DESTINACIJE,
   LOKACIJA,
   KOMENTAR,
   UPDATE,
   GET_DESTINACIJA,
+  SET_SEKCIJA,
 } from "./types";
 import axios from "axios";
 
@@ -18,7 +18,6 @@ const apiJSON = axios.create({
 
 const proveraStorage = (lokacija, data) => {
   if (localStorage.getItem("znamenitostProps")) {
-    console.log(localStorage.getItem("znamenitostProps"));
     if (
       JSON.parse(localStorage.getItem("znamenitostProps"))
         .naziv.toLowerCase()
@@ -61,14 +60,9 @@ export const logout = (token) => async (dispatch) => {
   dispatch({ type: LOGOUT });
 };
 
-export const formaSet = (forma) => {
-  return { type: FORMA, payload: forma };
-};
-
 export const topSet = () => async (dispatch) => {
   let response = await apiJSON.get("/");
-  console.log(response.data);
-  const responseSlika0 = await apiJSON.get(
+  response.data.topLista[0].img = await apiJSON.get(
     `/slike/${response.data.topLista[0].naziv}1`
   );
   const responseSlika1 = await apiJSON.get(
@@ -80,7 +74,6 @@ export const topSet = () => async (dispatch) => {
   const responseSlika3 = await apiJSON.get(
     `/slike/${response.data.topLista[3].naziv}1`
   );
-  response.data.topLista[0].img = responseSlika0;
   response.data.topLista[1].img = responseSlika1;
   response.data.topLista[2].img = responseSlika2;
   response.data.topLista[3].img = responseSlika3;
@@ -125,7 +118,10 @@ export const updateKorisnik = (podaci) => {
 };
 
 export const getDestinacija = (destinacija) => async (dispatch) => {
-  console.log(destinacija);
   const response = await apiJSON.get(`/destinacije/${destinacija}`);
   dispatch({ type: GET_DESTINACIJA, payload: response.data[0] });
+};
+
+export const setSekcija = (sekcija) => {
+  return { type: SET_SEKCIJA, payload: sekcija };
 };

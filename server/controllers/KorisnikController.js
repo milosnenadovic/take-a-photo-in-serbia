@@ -89,7 +89,7 @@ exports.loginKorisnik = (req, res) => {
                   refreshToken,
                 });
               })
-              .catch((err) => res.status(400).json("Error: " + err));
+              .catch((err) => res.status(400).json({msg: "Error: " + err}));
           } else {
             res.status(200).json({
               msg: "Neispravna lozinka!",

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { setLokacija, formaSet, dodajKomentar, login } from "../actions";
+import { setLokacija, dodajKomentar, login } from "../actions";
 import DodajKomentar from "./DodajKomentar";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
@@ -345,7 +345,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   setLokacija,
-  formaSet,
   dodajKomentar,
   login,
 })(Znamenitost);

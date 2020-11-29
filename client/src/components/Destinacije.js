@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { setSekcija } from "../actions";
+import { connect } from "react-redux";
 import axios from "axios";
 import Footer from "./Footer";
 
@@ -11,12 +13,27 @@ class Destinacije extends React.Component {
           .split("/")[2]
           .toLowerCase()}`
       );
-      this.forceUpdate();
+    }
+    this.forceUpdate();
+  };
+
+  componentDidUpdate = async () => {
+    if (
+      this.props.sekcija !==
+      window.location.pathname.split("/")[2].toUpperCase()
+    ) {
+      this.response = await axios.get(
+        `http://localhost:5000/destinacije/${window.location.pathname
+          .split("/")[2]
+          .toLowerCase()}`
+      );
+      this.props.setSekcija(
+        window.location.pathname.split("/")[2].toUpperCase()
+      );
     }
   };
 
   renderDestinacije = (listaDestinacija) => {
-    console.log(listaDestinacija);
     let obradaOpisa = (opis) => {
       return opis.substring(0, 240).concat("...");
     };
@@ -89,7 +106,7 @@ class Destinacije extends React.Component {
         document.getElementById(nav).classList.remove("font-weight-bold")
       );
       nav.classList.add("font-weight-bold");
-    }, 500);
+    }, 250);
 
     return (
       <div>
@@ -116,4 +133,8 @@ class Destinacije extends React.Component {
   }
 }
 
-export default Destinacije;
+const mapStateToProps = (state) => {
+  return { sekcija: state.lokacija.sekcija };
+};
+
+export default connect(mapStateToProps, { setSekcija })(Destinacije);
