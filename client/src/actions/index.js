@@ -3,11 +3,11 @@ import {
   LOGIN,
   LOGOUT,
   TOP_LISTA,
-  DESTINACIJE,
   LOKACIJA,
   KOMENTAR,
   UPDATE,
   GET_DESTINACIJA,
+  GET_ZNAMENITOSTI,
   SET_SEKCIJA,
 } from "./types";
 import axios from "axios";
@@ -64,8 +64,7 @@ export const topSet = () => async (dispatch) => {
   let response = await apiJSON.get("/");
   response.data.topLista[0].img = await apiJSON.get(
     `/slike/${response.data.topLista[0].naziv}1`
-  );
-  const responseSlika1 = await apiJSON.get(
+  );  const responseSlika1 = await apiJSON.get(
     `/slike/${response.data.topLista[1].naziv}1`
   );
   const responseSlika2 = await apiJSON.get(
@@ -83,14 +82,14 @@ export const topSet = () => async (dispatch) => {
   });
 };
 
-export const destinacijeGet = (destinacije) => async (dispatch) => {
-  let response = await apiJSON.get(`/destinacije/${destinacije}`);
-  console.log(response.data);
-  dispatch({
-    type: DESTINACIJE,
-    payload: response.data,
-  });
-};
+// export const getDestinacijet = (destinacije) => async (dispatch) => {
+//   let response = await apiJSON.get(`/destinacije/${destinacije}`);
+//   console.log(response.data);
+//   dispatch({
+//     type: DESTINACIJE,
+//     payload: response.data,
+//   });
+// };
 
 export const setLokacija = (lokacija) => async (dispatch) => {
   console.log("set lokacija: " + lokacija);
@@ -119,9 +118,14 @@ export const updateKorisnik = (podaci) => {
 
 export const getDestinacija = (destinacija) => async (dispatch) => {
   const response = await apiJSON.get(`/destinacije/${destinacija}`);
-  dispatch({ type: GET_DESTINACIJA, payload: response.data[0] });
+  dispatch({ type: GET_DESTINACIJA, payload: response.data });
 };
 
 export const setSekcija = (sekcija) => {
   return { type: SET_SEKCIJA, payload: sekcija };
+};
+
+export const getZnamenitosti = (destinacija) => async (dispatch) => {
+  let response = await apiJSON.get(`/znamenitosti/${destinacija}`);
+  dispatch({ type: GET_ZNAMENITOSTI, payload: response.data });
 };

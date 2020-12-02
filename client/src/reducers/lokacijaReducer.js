@@ -1,4 +1,10 @@
-import { LOKACIJA, KOMENTAR, GET_DESTINACIJA, SET_SEKCIJA } from "../actions/types";
+import {
+  LOKACIJA,
+  KOMENTAR,
+  GET_DESTINACIJA,
+  SET_SEKCIJA,
+  GET_ZNAMENITOSTI,
+} from "../actions/types";
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -20,11 +26,16 @@ export default (state = [], action) => {
         ...state,
         lokacija: action.payload,
       };
-      case SET_SEKCIJA:
-        return {
-          ...state,
-          sekcija: action.payload,
-        };
+    case GET_ZNAMENITOSTI:
+      return {
+        ...state,
+        znamenitosti: action.payload,
+      };
+    case SET_SEKCIJA:
+      return {
+        ...state,
+        sekcija: action.payload,
+      };
     default:
       return state;
   }

@@ -21,7 +21,7 @@ const DodajKomentar = (props) => {
       className="d-inline-block m-3 text-center align-middle bg-light shadow w-50"
       onSubmit={handleSubmit(onKomentarSubmit)}
     >
-      <div className="d-flex justify-content-center align-items-center">
+      <div className="d-flex justify-content-center align-items-center mt-2 mb-1">
         <label
           className="lead m-2"
           style={{ color: "#003366" }}
@@ -32,17 +32,15 @@ const DodajKomentar = (props) => {
         <textarea
           name="komentar"
           type="text"
-          placeholder="Unesite komentar..."
+          placeholder="&#10;Unesite komentar..."
           ref={register({ required: "Morate uneti komentar!" })}
           style={{ color: "#003366" }}
-          className="mt-1"
-          rows="5"
+          rows="3"
           cols="40"
         />
       </div>
-      <br />
-      {errors.komentar && <span>{errors.komentar.message}</span>}
-      <input className="btn btn-primary mb-2" type="submit" name="submit" />
+      {errors.komentar && <span>{errors.komentar.message}<br/></span>}
+      <input className="btn btn-primary mb-2 mt-1" type="submit" name="submit" />
     </form>
   );
 };

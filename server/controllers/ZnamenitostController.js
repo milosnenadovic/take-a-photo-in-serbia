@@ -38,9 +38,9 @@ exports.getZnamenitosti = async (req, res) => {
       });
       // Ako znamenitost koja je prosleđena kroz URL ne postoji u bazi
       if (znamenitosti.length === 0) {
-        res
-          .status(404)
-          .json({ msg: `Znamenitost koju tražite ne postoji u bazi.` });
+        res.status(200).json({
+          msg: `Znamenitosti za ovu lokaciju još uvek ne postoje u bazi... Ako znate neke, pošaljite nam poruku!`,
+        });
       } else {
         res.status(200).json(znamenitosti);
       }

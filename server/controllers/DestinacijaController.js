@@ -43,13 +43,13 @@ exports.getDestinacija = async (req, res) => {
       destinacija = await Reke.findOne({ naziv: { $regex: filter } });
       break;
     case "jezera":
-      destinacija = await Jezera.find({ naziv: { $regex: filter } });
+      destinacija = await Jezera.findOne({ naziv: { $regex: filter } });
       break;
     case "planine":
-      destinacija = await Planine.find({ naziv: { $regex: filter } });
+      destinacija = await Planine.findOne({ naziv: { $regex: filter } });
       break;
     case "gradovi":
-      destinacija = await Gradovi.find({ naziv: { $regex: filter } });
+      destinacija = await Gradovi.findOne({ naziv: { $regex: filter } });
       break;
     default:
       destinacija = null;
