@@ -7,6 +7,7 @@ planineSchema = new Schema(
     naziv: { type: String, required: true },
     pregledi: { type: Number, required: true, default: 0 },
     opis: String,
+    znamenitosti: [String],
   },
   { collection: "planine" }
 );

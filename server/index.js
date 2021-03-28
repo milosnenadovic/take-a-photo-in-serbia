@@ -80,7 +80,7 @@ konekcija.once("open", () => {
       console.log("Nije moguce izlistati direktorijum.", err);
       process.exit(1);
     }
-    files.forEach(async (file) => {
+    files.forEach(async (file) => { 
       let mimeType = file.contentType;
       if (!mimeType) {
         mimeType = mime.getType(file);
@@ -88,14 +88,14 @@ konekcija.once("open", () => {
       if ((await Slika.findOne({ naziv: file.split(".")[0] })) === null) {
         var newImg = fs.readFileSync(folderGalerija.concat("\\", file));
         var encImg = newImg.toString("base64");
-        var newItem = new Slika({
+        var novaSlika = new Slika({
           naziv: file.split(".")[0],
           opis: ".",
           date: new Date(),
           contentType: mimeType,
           img: Buffer.from(encImg, "base64"),
         });
-        newItem
+        novaSlika
           .save()
           .then(() => console.log("Slika " + file + " je uneta u bazu!"))
           .catch((err) => res.status(400).json("Error: " + err));

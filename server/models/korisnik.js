@@ -11,8 +11,6 @@ const korisnikSchema = new Schema(
     prezime: String,
     mesto: String,
     slika: Boolean,
-    /*aktivan: { type: Boolean, default: false },
-    telefon: { type: String },*/
     refreshTokens: [String],
   },
   { collection: "korisnici" }
