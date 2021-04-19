@@ -29,7 +29,7 @@ app.use("/znamenitosti", require("./routes/znamenitosti"));
 app.use("/poruka", require("./routes/poruka"));
 app.use("/slike", require("./routes/slike"));
 
-//Pocetak aplikacije - prva informacija koja se salje na browser: lista naziva destinacija i top lista za destinacije
+//Početak aplikacije - prva informacija koja se šalje na browser: lista naziva destinacija i top lista za destinacije
 app.get("/", async (req, res) => {
   let lista = [];
   let topLista = [];
@@ -45,10 +45,10 @@ app.get("/", async (req, res) => {
   res.status(200).json({ topLista: topLista, lista: lista });
 });
 
-//Definisanje vrednosti porta na kojem ce server osluskivati dogadjaje
+//Definisanje vrednosti porta na kojem će server osluškivati događaje
 const PORT = process.env.PORT || 5000;
 
-//Podesavanje baze podataka
+//Podešavanje opcija za konekciju na bazu podataka
 const opcije = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -64,7 +64,7 @@ mongoose
   )
   .catch((error) => console.log(error));
 
-//Logovanje uspesne konekcije i vremena
+//Logovanje uspešne konekcije i vremena
 const konekcija = mongoose.connection;
 konekcija.on("connected", () =>
   console.log(
@@ -72,12 +72,12 @@ konekcija.on("connected", () =>
   )
 );
 
-//Ucitavanja slika dodatih u folder - a ne postoje u bazi
+//Učitavanja slika dodatih u folder - a ne postoje u bazi
 let folderGalerija = path.join(__dirname.split("server")[0], "galerija");
 konekcija.once("open", () => {
   fs.readdir(folderGalerija, (err, files) => {
     if (err) {
-      console.log("Nije moguce izlistati direktorijum.", err);
+      console.log("Nije moguće izlistati direktorijum.", err);
       process.exit(1);
     }
     files.forEach(async (file) => { 
@@ -98,7 +98,7 @@ konekcija.once("open", () => {
         novaSlika
           .save()
           .then(() => console.log("Slika " + file + " je uneta u bazu!"))
-          .catch((err) => res.status(400).json("Error: " + err));
+          .catch((err) => res.status(400).json("Greška: " + err));
       }
     });
   });
