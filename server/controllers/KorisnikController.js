@@ -101,28 +101,6 @@ exports.loginKorisnik = (req, res) => {
   });
 };
 
-// Odjava korisnika
-exports.logoutKorisnik = async (req, res) => {
-  const users = await Korisnik.find();
-  const validUser = await users.find((korisnik) =>
-    korisnik.refreshTokens.includes(req.body.token)
-  );
-  if (!validUser) {
-    return res.sendStatus(403);
-  } else {
-    const ind = validUser.refreshTokens.indexOf(req.body.token);
-    if (ind > -1) validUser.refreshTokens.splice(ind, 1);
-    validUser
-      .save()
-      .then(() => {
-        return res.status(200).json({
-          msg: "Korisnik izlogovan!",
-        });
-      })
-      .catch((err) => res.status(400).json("Error: " + err));
-  }
-};
-
 // Update podataka korisnika
 exports.updateKorisnik = async (req, res) => {
   let email = req.body.email;
@@ -134,8 +112,8 @@ exports.updateKorisnik = async (req, res) => {
         new: true,
       });
       res
-        .status(200)
-        .json({ korisnik: noviKorisnik, msg: "Uspešno se izmenili podatke!" });
+      .status(200)
+      .json({ korisnik: noviKorisnik, msg: "Uspešno se izmenili podatke!" });
     } else {
       res.status(403).json({ msg: "Nemate potrebne podatke za update!" });
     }
@@ -192,15 +170,15 @@ exports.updateKorisnik = async (req, res) => {
                 });
               })
               .catch((err) => res.status(400).json("Error: " + err));
-          } else {
-            let slika = await Slika.findOne({ naziv: file.split(ext)[0] });
-            let newImg = fs.readFileSync(folderKorisnici.concat("\\", file));
-            if (
+            } else {
+              let slika = await Slika.findOne({ naziv: file.split(ext)[0] });
+              let newImg = fs.readFileSync(folderKorisnici.concat("\\", file));
+              if (
               Buffer.from(slika.img.buffer, "base64").equals(
                 Buffer.from(newImg.toString("base64"), "base64")
-              )
-            ) {
-              res.status(200).json({
+                )
+                ) {
+                  res.status(200).json({
                 korisnik: noviKorisnik,
                 msg: "Slika je ista! Ostali podaci su izmenjeni!",
               });
@@ -209,11 +187,11 @@ exports.updateKorisnik = async (req, res) => {
                 if (err) console.log(err);
                 var newImg = fs.readFileSync(
                   folderKorisnici.concat("\\", file)
-                );
-                var encImg = newImg.toString("base64");
-                var newItem = new Slika({
-                  naziv: file.split(ext)[0],
-                  opis: "Profilna slika korisnika.",
+                  );
+                  var encImg = newImg.toString("base64");
+                  var newItem = new Slika({
+                    naziv: file.split(ext)[0],
+                    opis: "Profilna slika korisnika.",
                   date: new Date(),
                   contentType: mimeType,
                   img: Buffer.from(encImg, "base64"),
@@ -228,17 +206,39 @@ exports.updateKorisnik = async (req, res) => {
                     });
                   })
                   .catch((err) =>
-                    res.status(400).json({
-                      korisnik: noviKorisnik,
-                      msg: `Podaci o korisniku su sačuvani. Problem pri čuvanje slike: ${err}`,
-                    })
+                  res.status(400).json({
+                    korisnik: noviKorisnik,
+                    msg: `Podaci o korisniku su sačuvani. Problem pri čuvanje slike: ${err}`,
+                  })
                   );
-              });
+                });
             }
           }
         }
       });
     });
+  }
+};
+
+// Odjava korisnika
+exports.logoutKorisnik = async (req, res) => {
+  const users = await Korisnik.find();
+  const validUser = await users.find((korisnik) =>
+    korisnik.refreshTokens.includes(req.body.token)
+  );
+  if (!validUser) {
+    return res.sendStatus(403);
+  } else {
+    const ind = validUser.refreshTokens.indexOf(req.body.token);
+    if (ind > -1) validUser.refreshTokens.splice(ind, 1);
+    validUser
+      .save()
+      .then(() => {
+        return res.status(200).json({
+          msg: "Korisnik izlogovan!",
+        });
+      })
+      .catch((err) => res.status(400).json("Error: " + err));
   }
 };
 
@@ -248,7 +248,7 @@ exports.deleteKorisnik = (req, res) => {
     .then(() => res.json({ msg: "Korisnik uklonjen." }))
     .catch((err) =>
       res
-        .status(400)
-        .json({ msg: `Greška: ${err}. Korisnik nije pronađen u bazi.` })
+      .status(400)
+      .json({ msg: `Greška: ${err}. Korisnik nije pronađen u bazi.` })
     );
 };

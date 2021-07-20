@@ -29,7 +29,8 @@ app.use("/znamenitosti", require("./routes/znamenitosti"));
 app.use("/poruka", require("./routes/poruka"));
 app.use("/slike", require("./routes/slike"));
 
-//Početak aplikacije - prva informacija koja se šalje na browser: lista naziva destinacija i top lista za destinacije
+//Početak aplikacije - prva informacija koja se šalje na browser: 
+//lista naziva destinacija i top lista za destinacije
 app.get("/", async (req, res) => {
   let lista = [];
   let topLista = [];

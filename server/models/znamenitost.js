@@ -22,3 +22,4 @@ znamenitostSchema = new Schema(
 const ModelClassZnamenitost = mongoose.model("Znamenitost", znamenitostSchema);
 
 module.exports = ModelClassZnamenitost;
+

@@ -20,15 +20,9 @@ korisnikSchema.pre("save", function (next) {
   const korisnik = this;
   if (korisnik.password.length < 32) {
     bcrypt.genSalt(10, function (err, salt) {
-      if (err) {
-        return next(err);
-      }
-
+      if (err) return next(err);
       bcrypt.hash(korisnik.password, salt, null, function (err, hash) {
-        if (err) {
-          return next(err);
-        }
-
+        if (err) return next(err);
         korisnik.password = hash;
         next();
       });
@@ -38,14 +32,9 @@ korisnikSchema.pre("save", function (next) {
   }
 });
 
-korisnikSchema.methods.comparePassword = function (
-  candidatePassword,
-  callback
-) {
+korisnikSchema.methods.comparePassword = function (candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-    if (err) {
-      return callback(err);
-    }
+    if (err) return callback(err);
     callback(null, isMatch);
   });
 };
@@ -53,3 +42,4 @@ korisnikSchema.methods.comparePassword = function (
 const ModelClassKorisnik = mongoose.model("Korisnik", korisnikSchema);
 
 module.exports = ModelClassKorisnik;
+

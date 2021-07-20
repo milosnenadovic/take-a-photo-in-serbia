@@ -1,31 +1,38 @@
 const Poruka = require("../models/poruka");
-const nodemailer = require("nodemailer");
 
 const posaljiPotvrdu = (email) => {
-  let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.USER_EMAIL,
-      pass: process.env.USER_PASSWORD,
-    },
+  const mailjet = require("node-mailjet").connect(
+    MAILJET_APIKEY_MAIL,
+    MAILJET_APIKEY_PASSWORD
+  );
+  const request = mailjet.post("send", { version: "v3.1" }).request({
+    Messages: [
+      {
+        From: {
+          Email: process.env.USER_EMAIL,
+          Name: "Take-A-Photo-In-Serbia",
+        },
+        To: [
+          {
+            Email: email,
+            Name: "Primalac",
+          },
+        ],
+        Subject: "Potvrdni mail",
+        HTMLPart: `<h2>Zdravo korisniče!</h2><div>
+      Uspešno ste poslali poruku! Hvala! Vaša poruka će biti obrađena u najbržem roku.<br/>
+      </div><br/><div></div>`,
+        CustomID: "takeaphotoinserbia",
+      },
+    ],
   });
-
-  let opcije = {
-    from: "takeaphotoinserbia@gmail.com",
-    to: email,
-    subject: "Potvrdni email",
-    html: `<h2>Zdravo korisniče!</h2><div>Uspešno ste poslali poruku! Hvala! Vaša poruka će biti obrađena u najbržem roku.<br/></div><br/><div></div>`,
-  };
-
-  transporter.sendMail(opcije, (err, info) => {
-    if (err) {
-      console.log("err: " + err);
-      return false;
-    } else {
-      console.log("info: " + info.response);
-      return true;
-    }
-  });
+  request
+    .then((result) => {
+      console.log(result.body);
+    })
+    .catch((err) => {
+      console.log(err.statusCode);
+    });
 };
 
 exports.posaljiPoruku = async (req, res) => {
@@ -63,8 +70,7 @@ exports.posaljiPoruku = async (req, res) => {
       );
   } else {
     res.status(200).json({
-      msg:
-        "Poruka koju zelite poslati nije ispravna! Proveriti ispravnost email adrese i broj karaktera u poruci!",
+      msg: "Poruka koju zelite poslati nije ispravna! Proveriti ispravnost email adrese i broj karaktera u poruci!",
     });
   }
 };
