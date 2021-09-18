@@ -314,7 +314,7 @@ const Header = (props) => {
                   </Link>
                   <Link
                     to={{
-                      pathname: "/logout",
+                      pathname: "/odjava",
                       onClick: () =>
                         props.logout(props.auth.korisnik.refreshToken),
                     }}
@@ -342,7 +342,7 @@ const Header = (props) => {
           {renderNavigacija()}
           <Link
             to={{
-              pathname: "/login",
+              pathname: "/prijava",
               props: { korisnik: props.auth.korisnik },
             }}
             className="btn bg-primary text-light d-flex align-items-center justify-content-center"
@@ -352,7 +352,7 @@ const Header = (props) => {
           </Link>
           <Link
             to={{
-              pathname: "/signup",
+              pathname: "/registracija",
               props: { korisnik: props.auth.korisnik },
             }}
             className="btn bg-primary align-middle text-light d-flex align-items-center justify-content-center"

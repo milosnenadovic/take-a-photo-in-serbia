@@ -2,14 +2,14 @@ import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import Destinacije from "./Destinacije";
 import Destinacija from "./Destinacija";
-import Home from "./Home";
+import Pocetna from "./Pocetna";
 import Znamenitost from "./Znamenitost";
 import KontaktForma from "./KontaktForma";
 import Header from "./Header";
 import Podesavanja from "./Podesavanja";
-import LoginForma from "./LoginForma";
-import SignupForma from "./SignupForma";
-import LogoutForma from "./LogoutForma";
+import PrijavaForma from "./PrijavaForma";
+import RegistracijaForma from "./RegistracijaForma";
+import OdjavaForma from "./OdjavaForma";
 import { connect } from "react-redux";
 import { topSet } from "../actions";
 
@@ -27,14 +27,14 @@ class App extends React.Component {
               render={() =>
                 window.location.pathname !== "/kontakt" &&
                 window.location.pathname !== "/podesavanja" &&
-                window.location.pathname !== "/signup" &&
-                window.location.pathname !== "/login" &&
-                window.location.pathname !== "/logout" ? (
+                window.location.pathname !== "/registracija" &&
+                window.location.pathname !== "/prijava" &&
+                window.location.pathname !== "/odjava" ? (
                   <Header />
                 ) : null
               }
             />
-            <Route path="/" exact component={Home} />
+            <Route path="/" exact component={Pocetna} />
             <Route path="/podesavanja" component={Podesavanja} />
             <Route path="/destinacije/:destinacije" exact component={Destinacije} />
             
@@ -47,9 +47,9 @@ class App extends React.Component {
               component={Znamenitost}
             />
             <Route path="/kontakt" component={KontaktForma} />
-            <Route path="/login" component={LoginForma} />
-            <Route path="/logout" component={LogoutForma} />
-            <Route path="/signup" component={SignupForma} />
+            <Route path="/prijava" component={PrijavaForma} />
+            <Route path="/odjava" component={OdjavaForma} />
+            <Route path="/registracija" component={RegistracijaForma} />
           </div>
         </BrowserRouter>
       </div>

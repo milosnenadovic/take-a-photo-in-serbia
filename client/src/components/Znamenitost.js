@@ -169,7 +169,7 @@ class Znamenitost extends React.Component {
         <p>Morate biti ulogovani kako biste mogli da ostavite Vaš komentar!</p>
         <Link
           to={{
-            pathname: "/login",
+            pathname: "/prijava",
             props: { korisnik: this.props.korisnik.korisnik },
           }}
           className="btn btn-primary text-light"
@@ -179,7 +179,7 @@ class Znamenitost extends React.Component {
         <span className="m-2">ili</span>
         <Link
           to={{
-            pathname: "/signup",
+            pathname: "/registracija",
             props: { korisnik: this.props.korisnik.korisnik },
           }}
           className="btn btn-primary text-light"

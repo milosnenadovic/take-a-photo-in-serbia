@@ -9,7 +9,7 @@ const DodajKomentar = (props) => {
         korisnik: props.korisnik,
       })
       .then(() => {
-        alert("Komentar uspesno postavljen!");
+        alert("Komentar uspešno postavljen!");
         document.getElementsByTagName("textarea").komentar.value = "";
       });
   };

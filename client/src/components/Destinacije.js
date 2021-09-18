@@ -124,7 +124,7 @@ class Destinacije extends React.Component {
           <div>
             {this.response
               ? this.renderDestinacije(this.response.data)
-              : "loading"}
+              : "Učitavanje..."}
           </div>
         </div>
         <Footer />

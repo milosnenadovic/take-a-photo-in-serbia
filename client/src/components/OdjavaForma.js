@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const LogoutForma = (props) => {
+const OdjavaForma = (props) => {
   const onLogout = () => {
     props.location.onClick();
     props.history.goBack();
@@ -49,4 +49,4 @@ const LogoutForma = (props) => {
   );
 };
 
-export default LogoutForma;
+export default OdjavaForma;

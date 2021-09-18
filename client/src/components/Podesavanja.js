@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { useForm } from "react-hook-form";
 import { updateKorisnik } from "../actions";
+import { GRADOVI, DIJASPORA } from "../vars";
 
 const Podesavanja = (props) => {
   if (!props.korisnik.ulogovan) props.history.goBack();
@@ -76,47 +77,7 @@ const Podesavanja = (props) => {
   };
 
   const renderDijaspora = () => {
-    let dijaspora = [
-      "Austrija",
-      "Belgija",
-      "Belorusija",
-      "BiH",
-      "Bugarska",
-      "Grčka",
-      "Danska",
-      "Izrael",
-      "Irska",
-      "Italija",
-      "Jermenija",
-      "Kazahstan",
-      "Kanada",
-      "Kipar",
-      "Mađarska",
-      "Makedonija",
-      "Malta",
-      "Nemačka",
-      "Norveška",
-      "Poljska",
-      "Portugal",
-      "Rumunija",
-      "Rusija",
-      "SAD",
-      "Slovačka",
-      "Slovenija",
-      "Turska",
-      "UAE",
-      "UK",
-      "Ukrajina",
-      "Finska",
-      "Francuska",
-      "Holandija",
-      "Hrvatska",
-      "Crna Gora",
-      "Češka",
-      "Švajcarska",
-      "Švedska",
-      "Španija",
-    ];
+    let dijaspora = DIJASPORA;
     return dijaspora.map((d) => (
       <option key={d} value={d}>
         {d}
@@ -125,124 +86,7 @@ const Podesavanja = (props) => {
   };
 
   const renderGradovi = () => {
-    let gradovi = [
-      "Aleksinac",
-      "Apatin",
-      "Aranđelovac",
-      "Bajina Bašta",
-      "Bačka Palanka",
-      "Bačka Topola",
-      "Batajnica",
-      "Beograd",
-      "Beočin",
-      "Bečej",
-      "Bogatić",
-      "Bor",
-      "Brus",
-      "Bujanovac",
-      "Valjevo",
-      "Velika Plana",
-      "Vladičin Han",
-      "Vlasotince",
-      "Vranje",
-      "Vrbas",
-      "Vrnjaćka Banja",
-      "Vršac",
-      "Vučitrn",
-      "Gornji Milanovac",
-      "Gračanica",
-      "Gnjilane",
-      "Dimitrovgrad",
-      "Donji Milanovac",
-      "Đakovica",
-      "Žabalj",
-      "Zaječar",
-      "Zvečan",
-      "Zlatibor",
-      "Zrenjanin",
-      "Ivanjica",
-      "Inđija",
-      "Irig",
-      "Jagodina",
-      "Kikinda",
-      "Kladovo",
-      "Knjaževac",
-      "Kovin",
-      "Kosovska Mitrovica",
-      "Kostolac",
-      "Kragujevac",
-      "Kraljevo",
-      "Krupanj",
-      "Kruševac",
-      "Kula",
-      "Kuršumlija",
-      "Lazarevac",
-      "Lebane",
-      "Leposavić",
-      "Leskovac",
-      "Loznica",
-      "Ljig",
-      "Majdanpek",
-      "Mali Zvornik",
-      "Mladenovac",
-      "Mol",
-      "Negotin",
-      "Niš",
-      "Nova Varoš",
-      "Novi Bečej",
-      "Novi Kneževac",
-      "Novi Pazar",
-      "Novi Sad",
-      "Obrenovac",
-      "Odžaci",
-      "Pančevo",
-      "Paraćin",
-      "Petrovaradin",
-      "Petrovac",
-      "Peć",
-      "Pirot",
-      "Podujevo",
-      "Požarevac",
-      "Požega",
-      "Priboj",
-      "Prijepolje",
-      "Priština",
-      "Prizren",
-      "Prokuplje",
-      "Raška",
-      "Ruma",
-      "Svilajnac",
-      "Svrljig",
-      "Sevojno",
-      "Senta",
-      "Sjenica",
-      "Smederevo",
-      "Smederevska Palanka",
-      "Sokobanja",
-      "Sombor",
-      "Sopot",
-      "Srbobran",
-      "Sremska Kamenica",
-      "Sremska Mitrovica",
-      "Sremski Karlovci",
-      "Stara Pazova",
-      "Subotica",
-      "Surdulica",
-      "Surčin",
-      "Temerin",
-      "Trstenik",
-      "Tutin",
-      "Ćuprija",
-      "Ub",
-      "Užice",
-      "Uroševac",
-      "Futog",
-      "Crvenka",
-      "Čajetina",
-      "Čačak",
-      "Šabac",
-      "Šid",
-    ];
+    let gradovi = GRADOVI;
     return gradovi.map((g) => (
       <option key={g} value={g}>
         {g}
@@ -254,7 +98,7 @@ const Podesavanja = (props) => {
     <div className="container w-25 mt-5 d-flex flex-column justify-content-center align-items-center bg-light shadow">
       <form
         onSubmit={handleSubmit(onSacuvajIzmene)}
-        className="d-flex mt-2 flex-column justify-content-center align-items-center"
+        className="d-flex mt-2 flex-column align-items-center"
       >
         <img
           id="korisnik-header"
@@ -278,8 +122,8 @@ const Podesavanja = (props) => {
           name="slika"
           ref={register}
         />
-        <div className="container d-flex justify-content-start align-items-center mt-2">
-          <label className="lead mr-2" htmlFor="ime">
+        <div className="d-flex justify-content-between mt-2 w-100">
+          <label className="mr-2 lead w-50" htmlFor="ime">
             Ime:{" "}
           </label>
           <input
@@ -289,10 +133,11 @@ const Podesavanja = (props) => {
               props.korisnik.ime !== undefined ? props.korisnik.ime : ""
             }
             ref={register}
+            className="rounded w-50"
           />
         </div>
-        <div className="container d-flex justify-content-start align-items-center mt-2">
-          <label className="lead mr-2" htmlFor="prezime">
+        <div className="d-flex justify-content-between mt-2 w-100">
+          <label className="mr-2 lead w-50" htmlFor="prezime">
             Prezime:{" "}
           </label>
           <input
@@ -302,10 +147,11 @@ const Podesavanja = (props) => {
               props.korisnik.prezime !== undefined ? props.korisnik.prezime : ""
             }
             ref={register}
+            className="rounded w-50"
           />
         </div>
-        <div className="container d-flex justify-content-start align-items-center mt-2">
-          <label className="lead mr-2" htmlFor="drzava">
+        <div className="d-flex justify-content-between mt-2 w-100">
+          <label className="mr-2 lead w-50" htmlFor="drzava">
             Država:{" "}
           </label>
           <select
@@ -313,32 +159,51 @@ const Podesavanja = (props) => {
             defaultValue=""
             onChange={() => onChangeDrzava()}
             ref={register}
+            className="rounded w-50"
           >
             <option value=""></option>
             <option value="Srbija">Srbija</option>
             <option value="Dijaspora">Dijaspora</option>
           </select>
         </div>
-        <div id="grad" hidden>
-          <label className="lead mr-2" htmlFor="grad">
+        <div
+          className="d-flex justify-content-between mt-2 w-100"
+          id="grad"
+          hidden
+        >
+          <label className="mr-2 lead w-50" htmlFor="grad">
             Grad:{" "}
           </label>
-          <select name="grad" defaultValue="" ref={register}>
+          <select
+            className="rounded w-50"
+            name="grad"
+            defaultValue=""
+            ref={register}
+          >
             <option value=""></option>
             {renderGradovi()}
           </select>
         </div>
-        <div id="dijaspora" hidden>
-          <label className="lead mr-2" htmlFor="dijaspora">
+        <div
+          className="d-flex justify-content-between mt-2 w-100"
+          id="dijaspora"
+          hidden
+        >
+          <label className="mr-2 lead w-50" htmlFor="dijaspora">
             Dijaspora:{" "}
           </label>
-          <select name="dijaspora" defaultValue={undefined} ref={register}>
+          <select
+            className="rounded w-50"
+            name="dijaspora"
+            defaultValue={undefined}
+            ref={register}
+          >
             <option value={undefined}></option>
             {renderDijaspora()}
           </select>
         </div>
-        <div className="container d-flex justify-content-start align-items-center mt-2">
-          <label className="lead mr-2" htmlFor="email">
+        <div className="d-flex justify-content-between mt-2 w-100">
+          <label className="mr-2 lead w-25" htmlFor="email">
             E-mail:{" "}
           </label>
           <input
@@ -346,22 +211,26 @@ const Podesavanja = (props) => {
             name="email"
             defaultValue={props.korisnik.email}
             ref={register({ required: "Morate uneti e-mail!" })}
+            className="rounded w-75"
           />
           {errors.email && <span>{errors.email.message}</span>}
         </div>
-        <input
-          className="btn mt-2 btn-primary text-light font-weight-bold lead"
-          name="submit"
-          type="submit"
-          value="Sačuvaj"
-        />
+        <span className="mt-3">
+          <input
+            className="btn m-2 btn-primary text-light font-weight-bold lead"
+            name="submit"
+            type="submit"
+            value="Sačuvaj"
+          />
+          <button
+            type="button"
+            className="btn m-2 btn-danger text-light font-weight-bold lead"
+            onClick={() => props.history.goBack()}
+          >
+            Nazad
+          </button>
+        </span>
       </form>
-      <button
-        className="btn mt-2 mb-2 btn-danger text-light font-weight-bold lead"
-        onClick={() => props.history.goBack()}
-      >
-        Nazad
-      </button>
     </div>
   );
 };
